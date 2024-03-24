@@ -13,6 +13,7 @@ public class LevelLoader : MonoBehaviour
         LoadNextLevel();
     }
 
+    // Enable this with every scene change [TODO]
     public void LoadNextLevel() {
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
     }

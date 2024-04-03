@@ -132,27 +132,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 63693975}
-  - component: {fileID: 63693974}
+  - component: {fileID: 63693976}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player Controls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &63693974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 63693973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcd9ed29f2c32bd3ba12f441d3f9181b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numberOfCompletedLevels: 1
 --- !u!4 &63693975
 Transform:
   m_ObjectHideFlags: 0
@@ -168,6 +155,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &63693976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63693973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcd9ed29f2c32bd3ba12f441d3f9181b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberOfCompletedLevels: 1
 --- !u!1 &254072229
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,7 +330,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 63693974}
+      - m_Target: {fileID: 63693976}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: LoadPlayer
         m_Mode: 1
@@ -613,7 +613,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 0.45597565, b: 0.12549347, a: 1}
-    m_HighlightedColor: {r: 1, g: 0.45882353, b: 0.12941177, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 1, g: 0.45882353, b: 0.12941177, a: 1}
     m_SelectedColor: {r: 1, g: 0.45882353, b: 0.12941177, a: 1}
     m_DisabledColor: {r: 0.33133018, g: 0.33133018, b: 0.33133018, a: 0.5019608}
@@ -634,7 +634,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 644649770}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 647095813}
+        m_TargetAssemblyTypeName: ButtonControls, Assembly-CSharp
+        m_MethodName: LevelCompleted
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &644649770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,6 +685,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 644649767}
   m_CullTransparentMesh: 1
+--- !u!1 &647095810
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 647095812}
+  - component: {fileID: 647095813}
+  m_Layer: 0
+  m_Name: LVL Button Controls
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &647095812
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647095810}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &647095813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647095810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e90a32a23bea8be846e7ac3f9e7530, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableButtonLVL:
+  - {fileID: 1920341497}
+  - {fileID: 1835501092}
+  - {fileID: 1714530999}
+  buttonManager: {fileID: 0}
 --- !u!1 &910866257
 GameObject:
   m_ObjectHideFlags: 0
@@ -1125,7 +1186,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 63693974}
+      - m_Target: {fileID: 63693976}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: SavePlayer
         m_Mode: 1
@@ -1210,7 +1271,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -554.368, y: 258.12402}
+  m_AnchoredPosition: {x: -540, y: 270}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.25303352, y: 0.67323375}
 --- !u!114 &1525071639
@@ -1498,7 +1559,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1835501093}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 647095813}
+        m_TargetAssemblyTypeName: ButtonControls, Assembly-CSharp
+        m_MethodName: LevelCompleted
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1835501093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1694,7 +1767,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1920341498}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 647095813}
+        m_TargetAssemblyTypeName: ButtonControls, Assembly-CSharp
+        m_MethodName: LevelCompleted
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1920341498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1966,3 +2051,4 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 2143013034}
   - {fileID: 63693975}
+  - {fileID: 647095812}

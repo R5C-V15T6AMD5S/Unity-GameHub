@@ -5,15 +5,19 @@ using UnityEngine.UI;
 
 public class LevelButtonManager : MonoBehaviour
 {
-    public Button[] lvlButtons;
+    public Color orangeColor = new Color(1f, 0.45f, 0.125f); // Color #FF7420
 
-    public void EnableNextLevelBT(string lvlBTname, Color color) {
-        foreach(Button button in lvlButtons) {
-            if(button.name == lvlBTname) {
-                button.interactable = true;
-                button.GetComponent<Image>().color = color;
-                break;
-            }
+    public void EnableNextLevelBT(Button[] enableButtonLVL) {
+        foreach(Button button in enableButtonLVL) {
+            button.interactable = true;
+            
+            // Change the colors
+            ColorBlock colors = button.colors;
+            colors.normalColor = orangeColor;
+            colors.pressedColor = orangeColor;
+            colors.selectedColor = orangeColor;
+            colors.highlightedColor = Color.white;
+            button.colors = colors;
         }
     }
 }

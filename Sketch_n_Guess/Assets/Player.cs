@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
         SaveLoadFunctions.SavePlayerStats(this);
     }
 
-    public void  LoadPlayer() {
+    public void LoadPlayer() {
         PlayerData data = SaveLoadFunctions.LoadPlayerStats();
 
         numberOfCompletedLevels = data.levelCompletionNumber;

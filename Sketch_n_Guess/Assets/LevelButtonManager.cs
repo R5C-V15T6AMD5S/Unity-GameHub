@@ -11,7 +11,7 @@ public class LevelButtonManager : MonoBehaviour
         foreach(Button button in enableButtonLVL) {
             button.interactable = true;
             
-            // Change the colors
+            // Change the color properties
             ColorBlock colors = button.colors;
             colors.normalColor = orangeColor;
             colors.pressedColor = orangeColor;

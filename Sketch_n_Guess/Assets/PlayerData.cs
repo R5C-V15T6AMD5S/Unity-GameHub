@@ -4,7 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class PlayerData {
-    public int levelCompletionNumber;
+    public int levelCompletionNumber = 0;
     public bool[] levelStatus = new bool[4];
 
     public PlayerData (Player player) {

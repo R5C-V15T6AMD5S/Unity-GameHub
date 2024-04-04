@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
-    public int numberOfCompletedLevels = -1;
+    public int numberOfCompletedLevels = 0;
 
-    // This array keeps track of the completion status of each level
-    // There are 4 levels
+    // Keeps track of the completion status of each of the 4 levels
     public bool[] levelCompletionStatus = new bool[4];
 
     public void SavePlayer() {

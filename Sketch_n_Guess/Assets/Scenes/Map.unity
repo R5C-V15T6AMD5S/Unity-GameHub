@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfCompletedLevels: 1
+  levelCompletionStatus: 00000000
 --- !u!1 &254072229
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,6 +765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e90a32a23bea8be846e7ac3f9e7530, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData: {fileID: 63693976}
   enableButtonLVL:
   - {fileID: 1920341497}
   - {fileID: 1835501092}
@@ -1004,9 +1006,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1880872950}
+  - {fileID: 1525071638}
   - {fileID: 1505474715}
   - {fileID: 395688949}
-  - {fileID: 1525071638}
   - {fileID: 1435119004}
   - {fileID: 562399193}
   m_Father: {fileID: 519420032}

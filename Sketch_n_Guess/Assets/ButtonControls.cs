@@ -15,7 +15,7 @@ public class ButtonControls : MonoBehaviour {
         if (!levelCompleted[buttonIndex]) {
             playerData.numberOfCompletedLevels++;
             levelCompleted[buttonIndex] = true;
-            Debug.Log("Levels Completed: " + playerData.numberOfCompletedLevels);
+            // Debug.Log("Levels Completed: " + playerData.numberOfCompletedLevels);
 
             Button[] buttonsToEnable = new Button[] { enableButtonLVL[buttonIndex] };
             buttonManager.EnableNextLevelBT(buttonsToEnable);

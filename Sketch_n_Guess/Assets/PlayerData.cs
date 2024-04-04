@@ -5,10 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerData {
     public int levelCompletionNumber;
-    //public int[] levelStars;
+    public bool[] levelStatus = new bool[4];
 
     public PlayerData (Player player) {
         levelCompletionNumber = player.numberOfCompletedLevels;
-        //levelStars = player.numberOfStarsPerLevel;
+
+        for (int i = 0; i < player.levelCompletionStatus.Length; i++) {
+            levelStatus[i] = player.levelCompletionStatus[i];
+        }
     }
 }

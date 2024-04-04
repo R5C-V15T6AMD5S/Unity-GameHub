@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
-{
-    //public Button[] levelButtons;
-    public int numberOfCompletedLevels = 1;
+public class Player : MonoBehaviour {
+    public int numberOfCompletedLevels = -1;
 
     // This array keeps track of the completion status of each level
-    //private bool[] levelCompletionStatus;
+    // There are 4 levels
+    public bool[] levelCompletionStatus = new bool[4];
 
     public void SavePlayer() {
         SaveLoadFunctions.SavePlayerStats(this);
@@ -19,5 +18,8 @@ public class Player : MonoBehaviour
         PlayerData data = SaveLoadFunctions.LoadPlayerStats();
 
         numberOfCompletedLevels = data.levelCompletionNumber;
+        for(int i = 0; i < data.levelStatus.Length; i++) {
+            levelCompletionStatus[i] = data.levelStatus[i];
+        }
     }
 }

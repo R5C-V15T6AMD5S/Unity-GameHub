@@ -1026,11 +1026,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelLoader
       objectReference: {fileID: 0}
+    - target: {fileID: 6789976642438537736, guid: 7b7e5d9bc83abb061b761c2b770f0b88, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b7e5d9bc83abb061b761c2b770f0b88, type: 3}
+--- !u!95 &1148588157 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1304931881770286149, guid: 7b7e5d9bc83abb061b761c2b770f0b88, type: 3}
+  m_PrefabInstance: {fileID: 1148588156}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1256953881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1043,6 +1052,7 @@ GameObject:
   - component: {fileID: 1256953885}
   - component: {fileID: 1256953884}
   - component: {fileID: 1256953883}
+  - component: {fileID: 1256953886}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -1138,6 +1148,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1256953886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1256953881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa2a3064473f3c3bb961abb979657bd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transition: {fileID: 1148588157}
+  transitionTime: 0.45
 --- !u!1 &1435119003
 GameObject:
   m_ObjectHideFlags: 0
@@ -1453,7 +1477,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1525071640}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1256953886}
+        m_TargetAssemblyTypeName: LevelLoader, Assembly-CSharp
+        m_MethodName: LoadNextLevel
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Main Menu
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1525071640
 MonoBehaviour:
   m_ObjectHideFlags: 0

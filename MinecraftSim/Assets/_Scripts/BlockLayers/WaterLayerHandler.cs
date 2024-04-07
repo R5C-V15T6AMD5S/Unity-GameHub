@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaterLayerHandler : MonoBehaviour
+public class WaterLayerHandler : BlockLayerHandler
 {
-    // Start is called before the first frame update
-    void Start()
+    public int waterLevel = 1;
+    protected override bool TryHandling(ChunkData chunkData, int x, int y, int z, int surfaceHeightNoise, Vector2Int mapSeedOffset)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if(y > surfaceHeightNoise && y <= waterLevel)
+        {
+            Vector3Int pos = new Vector3Int(x, y, z);
+            Chunk.SetBlock(chunkData, pos, BlockType.Water);
+            if(y == surfaceHeightNoise + 1)
+            {
+                pos.y = surfaceHeightNoise;
+                Chunk.SetBlock(chunkData, pos, BlockType.Sand);
+            }
+            return true;
+        }
+        return false;
     }
 }

@@ -14,7 +14,7 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(LoadLevel(loadScene));
     }
 
-    IEnumerator LoadLevel(string sceneName) { // int sceneIndex
+    IEnumerator LoadLevel(string sceneName) {
         // Play animation
         transition.SetTrigger("StartTrans");
 

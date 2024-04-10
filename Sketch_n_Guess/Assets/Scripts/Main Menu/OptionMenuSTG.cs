@@ -7,7 +7,6 @@ using UnityEngine.Audio;
 public class OptionMenuSTG : MonoBehaviour
 {
     Resolution[] resolutions;
-
     public Dropdown resolutionDropdown;
     int currentResolutionIndex = 0;
     void Start() {

@@ -6,14 +6,20 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
     private CharacterController controller;
+
+
     [SerializeField]
-    private float playerSpeed = 0.5f, playerRunSpeed = 8;
+    private float playerSpeed = 5.0f, playerRunSpeed = 8;
+
     [SerializeField]
     private float jumpHeight = 1.0f;
     [SerializeField]
     private float gravityValue = -9.81f;
     [SerializeField]
     private float flySpeed = 2;
+
+
+
     private Vector3 playerVelocity;
 
     [Header("Grounded check parameters:")]
@@ -24,12 +30,14 @@ public class PlayerMovement : MonoBehaviour
     [field: SerializeField]
     public bool IsGrounded { get; private set; }
 
+
     private InventoryController inventoryController; // Dodana referenca na InventoryController
 
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
         inventoryController = FindObjectOfType<InventoryController>(); // Pronalazi InventoryController u sceni
+
     }
 
     private Vector3 GetMovementDirection(Vector3 movementInput)
@@ -40,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
     public void Fly(Vector3 movementInput, bool ascendInput, bool descendInput)
     {
         Vector3 movementDirection = GetMovementDirection(movementInput);
+
         if (ascendInput)
         {
             movementDirection += Vector3.up * flySpeed;
@@ -53,11 +62,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void Walk(Vector3 movementInput, bool runningInput)
     {
-        // Provjera je li inventar aktivan; ako je, prekini izvršavanje ostatka metode
+
+        // Provjera je li inventar aktivan; ako je, prekini izvrï¿½avanje ostatka metode
         if (inventoryController != null && inventoryController.inventoryUI.activeSelf)
         {
             return;
         }
+
 
         Vector3 movementDirection = GetMovementDirection(movementInput);
         float speed = runningInput ? playerRunSpeed : playerSpeed;
@@ -77,6 +88,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void AddJumpForce()
     {
+
         playerVelocity.y = jumpHeight;
     }
 
@@ -95,4 +107,5 @@ public class PlayerMovement : MonoBehaviour
     {
         Gizmos.DrawRay(transform.position, Vector3.down * rayDistance);
     }
+
 }

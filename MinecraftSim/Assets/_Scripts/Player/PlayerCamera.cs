@@ -10,8 +10,10 @@ public class PlayerCamera : MonoBehaviour
     private Transform playerBody;
     [SerializeField]
     private PlayerInput playerInput;
+
     [SerializeField]
     private InventoryController inventoryController; // Dodana referenca na InventoryController
+
 
     float verticalRotation = 0f;
 
@@ -27,11 +29,13 @@ public class PlayerCamera : MonoBehaviour
 
     void Update()
     {
-        // Provjera je li inventar aktivan; ako je, prekini izvršavanje ostatka metode
+
+        // Provjera je li inventar aktivan; ako je, prekini izvrï¿½avanje ostatka metode
         if (inventoryController != null && inventoryController.inventoryUI.activeSelf)
         {
             return;
         }
+
 
         float mouseX = playerInput.MousePosition.x * sensitivity * Time.deltaTime;
         float mouseY = playerInput.MousePosition.y * sensitivity * Time.deltaTime;

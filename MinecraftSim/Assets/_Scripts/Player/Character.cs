@@ -1,7 +1,5 @@
 using System.Collections;
-
 using System.Collections.Generic;
-
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -13,9 +11,7 @@ public class Character : MonoBehaviour
     [SerializeField]
     private PlayerMovement playerMovement;
 
-
     public float interactionRayLength = 5;
-
 
     public LayerMask groundMask;
     public bool fly = false;
@@ -27,7 +23,6 @@ public class Character : MonoBehaviour
     private void Awake()
     {
         if (mainCamera == null) mainCamera = Camera.main;
-
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
     }
@@ -43,9 +38,7 @@ public class Character : MonoBehaviour
         fly = !fly;
     }
 
-
-    private void Update()
-
+    void Update()
     {
         if (fly)
         {
@@ -54,23 +47,19 @@ public class Character : MonoBehaviour
             animator.ResetTrigger("jump");
             playerMovement.Fly(playerInput.MovementInput, playerInput.IsJumping, playerInput.RunningPressed);
         }
-
         else 
         {
            animator.SetBool("isGrounded", playerMovement.IsGrounded);
            if (playerMovement.IsGrounded && playerInput.IsJumping && isWaiting == false)
            {
-
                 animator.SetTrigger("jump");
                 isWaiting = true;
                 StopAllCoroutines();
                 StartCoroutine(ResetWaiting());
-
            } 
            animator.SetFloat("speed", playerInput.MovementInput.magnitude);
            playerMovement.HandleGravity(playerInput.IsJumping);
            playerMovement.Walk(playerInput.MovementInput, playerInput.RunningPressed);
-
         }
     }
 
@@ -86,4 +75,3 @@ public class Character : MonoBehaviour
         
     }
 }
-

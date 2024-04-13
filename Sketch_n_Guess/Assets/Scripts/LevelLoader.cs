@@ -9,6 +9,7 @@ public class LevelLoader : MonoBehaviour
     public Animator transition;
     public float transitionTime = 0.45f;
 
+    // Tell button what scene to open - const
     public void LoadNextLevel(string loadScene) {
         //StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
         StartCoroutine(LoadLevel(loadScene));

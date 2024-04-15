@@ -7,6 +7,7 @@ public class PlayerInput : MonoBehaviour
 {
     public event Action OnMouseClick, OnFly;
 
+
     public bool RunningPressed { get; private set; }
 
     public Vector3 MovementInput { get; private set; }
@@ -17,6 +18,7 @@ public class PlayerInput : MonoBehaviour
 
     void Update()
     {
+
         GetMouseClick();
         GetMousePosition();
         GetMovementInput();
@@ -27,7 +29,9 @@ public class PlayerInput : MonoBehaviour
 
     private void GetFlyInput()
     {
+
         if (Input.GetKeyDown(KeyCode.V))
+
         {
             OnFly?.Invoke();
         }
@@ -55,7 +59,9 @@ public class PlayerInput : MonoBehaviour
 
     private void GetMouseClick()
     {
+
         if (Input.GetMouseButtonDown(0))
+
         {
             OnMouseClick?.Invoke();
         }

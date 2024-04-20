@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public enum BlockType
 {
+   //Enumeracija BlockType sadržava vrste voxela (blokova), enumeracija omogućava brže izvršavanje koda
    Nothing,
    Air,
    Grass_Dirt,

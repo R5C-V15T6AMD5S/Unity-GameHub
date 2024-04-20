@@ -184,6 +184,8 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   playerInput: {fileID: 2376276620366465885}
   playerMovement: {fileID: 5547965844274127358}
+  inventoryController: {fileID: 1560597894825158921, guid: 511d644c7c5c53d4e82b1ad652553858,
+    type: 3}
   interactionRayLength: 5
   groundMask:
     serializedVersion: 2

@@ -1,6 +1,6 @@
 public enum Direction
 {
-    foreward, // z+
+    forward, // z+
     right, // x+
     backwards, // z-
     left, // x-

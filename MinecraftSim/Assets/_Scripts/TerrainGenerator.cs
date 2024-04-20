@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
 {
-
+    // TerrainGenerator upravlja stvaranjem terenskih podataka za chunk
     public BiomeGenerator biomeGenerator;
     public ChunkData GenerateChunkData(ChunkData data, Vector2Int mapSeedOffset)
     {
@@ -13,6 +10,7 @@ public class TerrainGenerator : MonoBehaviour
         {
             for (int z = 0; z < data.chunkSize; z++)
             {
+                // Za svaku poziciju potrebno je terenske podatke
                 data = biomeGenerator.ProcessChunkColumn(data, x, z, mapSeedOffset);
             }
         }

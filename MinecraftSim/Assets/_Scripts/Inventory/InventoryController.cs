@@ -1,28 +1,29 @@
 using UnityEngine;
 
+// Metoda koja služi za kontroliranje i prikazivanje inventory-ja
 public class InventoryController : MonoBehaviour
 {
-    // Referenca na UI element inventara
+    // Referenca na UI element inventory-ja
     public GameObject inventoryUI;
 
-    // Varijabla za praæenje stanja prikaza inventara
+    // Varijabla za praæenje stanja prikaza inventory-ja
     private bool isInventoryVisible = false;
 
     void Start()
     {
-        // Poèetno stanje: inventar je skriven
+        // Poèetno stanje: inventory je skriven
         inventoryUI.SetActive(false);
     }
 
     void Update()
     {
-        // Prikazivanje/skrivanje inventara na pritisak tipke E
+        // Prikazivanje/skrivanje inventory-ja na pritisak tipke E
         if (Input.GetKeyDown(KeyCode.E))
         {
             ToggleInventory();
         }
 
-        // Ako je inventar aktivan, postavi kursor vidljivim i omoguæi slobodno kretanje kursora
+        // Ako je inventory aktivan, postavi kursor vidljivim i omoguæi slobodno kretanje kursora
         if (isInventoryVisible)
         {
             Cursor.visible = true;
@@ -35,13 +36,13 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    // Metoda za prikazivanje/skrivanje inventara
+    // Metoda za prikazivanje/skrivanje inventory
     void ToggleInventory()
     {
-        // Ako je inventar aktivan, skrij ga; ako nije, prikaži ga
+        // Ako je inventory aktivan, skrij ga ako nije, prikaži ga
         inventoryUI.SetActive(!inventoryUI.activeSelf);
 
-        // Ažuriraj stanje prikaza inventara
+        // Ažuriraj stanje prikaza inventory
         isInventoryVisible = inventoryUI.activeSelf;
     }
 }

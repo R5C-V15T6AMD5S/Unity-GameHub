@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WaterLayerHandler : BlockLayerHandler
 {
+    // Ovaj Handler postavlja "vodeni" tip bloka u rasponu između površine i razine vode. Za blokove koji su za 1 poziciju iznad površine, postavlja se pijesak.
     public int waterLevel = 1;
     protected override bool TryHandling(ChunkData chunkData, int x, int y, int z, int surfaceHeightNoise, Vector2Int mapSeedOffset)
     {

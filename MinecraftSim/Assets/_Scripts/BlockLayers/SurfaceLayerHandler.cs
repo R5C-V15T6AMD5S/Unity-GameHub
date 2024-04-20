@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SurfaceLayerHandler : BlockLayerHandler
 {
+    // Ovaj Handler postavlja površinski tip bloka na onaj koji je korisnik definirao unutar Unityja kao "Surface Block Type"
     public BlockType surfaceBlockType;
     protected override bool TryHandling(ChunkData chunkData, int x, int y, int z, int surfaceHeightNoise, Vector2Int mapSeedOffset)
     {

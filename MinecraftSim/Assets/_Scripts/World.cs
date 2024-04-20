@@ -1,25 +1,29 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class World : MonoBehaviour
 {
+    // Ova klasa upravlja generacijom i upravljanjem svijeta igre
+
+    // Veličina mape se ogledava u broju chunkova, generiraju se cijeli chunkovi
     public int mapSizeInChunks = 6;
     public int chunkSize = 16, chunkHeight = 100;
-    public int chunkDrawingRangen = 8;
 
+    // Definira koliko chunkova će se generirati oko igrača u svakom smjeru (gore, dolje, lijevo, desno)
+    public int chunkDrawingRange = 8;
+
+    // Prefab korišten za instanciranje chunkova
     public GameObject chunkPrefab;
-
     public TerrainGenerator terrainGenerator;
+
+    // Offset mape, korišten za proceduralnu generaciju
     public Vector2Int mapSeedOffset;
 
-    //public Dictionary<Vector3Int, ChunkData> chunkDataDictionary = new Dictionary<Vector3Int, ChunkData>();
-    //public Dictionary<Vector3Int, ChunkRenderer> chunkDictionary = new Dictionary<Vector3Int, ChunkRenderer>();
-
+    // Događaji koji se okidaju prilikom generacije svijeta i generacije novih chunkova respektivno
     public UnityEvent OnWorldCreated, OnNewChunksGenerated;
 
+    // Struktura koja sadrži podatke o svijetu
     public WorldData worldData { get; private set; } 
 
     private void Awake()
@@ -35,23 +39,28 @@ public class World : MonoBehaviour
 
     public void GenerateWorld()
     {
+        // Na početku se prosljeđuje inicijalna pozicija igrača (0)
         GenerateWorld(Vector3Int.zero);
     }
 
     private void GenerateWorld(Vector3Int position)
     {
+        // Dohvaćaju se potrebni chunkovi i podaci chunkova
         WorldGenerationData worldGenerationData = GetPositionsThatPlayerSees(position);
 
+        // Brišu se nepotrebni chunkovi
         foreach (Vector3Int pos in worldGenerationData.chunkPositionsToRemove)
         {
             WorldDataHelper.RemoveChunk(this, pos);
         }
 
+        // Brišu se nepotrebni podaci chunkova
         foreach (Vector3Int pos in worldGenerationData.chunkDataToRemove)
         {
             WorldDataHelper.RemoveChunkData(this, pos);
         }
 
+        // Generacija potrebnih chunkova
         foreach (var pos in worldGenerationData.chunkDataPositionsToCreate)
         {
             ChunkData data = new ChunkData(chunkSize, chunkHeight, this, pos);
@@ -59,6 +68,7 @@ public class World : MonoBehaviour
             worldData.chunkDataDictionary.Add(pos, newData);
         }
 
+        // Generacija potrebnih podataka chunkova
         foreach (var pos in worldGenerationData.chunkPositionsToCreate)
         {
             ChunkData data = worldData.chunkDataDictionary[pos];
@@ -70,24 +80,21 @@ public class World : MonoBehaviour
             chunkRenderer.UpdateChunk(meshData);
         }
 
-        // foreach (ChunkData data in worldData.chunkDataDictionary.Values)
-        // {
-        //     MeshData meshData = Chunk.GetChunkMeshData(data);
-        //     GameObject chunkObject = Instantiate(chunkPrefab, data.worldPosition, Quaternion.identity);
-        //     ChunkRenderer chunkRenderer = chunkObject.GetComponent<ChunkRenderer>();
-        //     worldData.chunkDictionary.Add(data.worldPosition, chunkRenderer);
-        //     chunkRenderer.InitializeChunk(data);
-        //     chunkRenderer.UpdateChunk(meshData);
-        // }
-
         OnWorldCreated?.Invoke();
     }
 
     private WorldGenerationData GetPositionsThatPlayerSees(Vector3Int playerPosition)
     {
+        /*
+        Ova metoda određuje chunkove i podatke chunkova koji su potrebni. Isto tako određuje i chunkove i podatke chunkova koji su nepotrebni.
+        Vraća WorldGenerationData koja sadrži sve potrebne pozicije chunkova za dodavanje i brisanje. 
+        */
+
+        // Sve pozicije koje trebaju postojati za određenu poziciju igrača (uključujući već postojeće chunkove)
         List<Vector3Int> allChunkPositionsNeeded = WorldDataHelper.GetChunkPositionsAroundPlayer(this, playerPosition);
         List<Vector3Int> allChunkDataPositionsNeeded = WorldDataHelper.GetDataPositionsAroundPlayer(this, playerPosition);
 
+        // Sve pozicije koje se trebaju generirati za određenu poziciju igrača (uključujući već postojeće chunkove)
         List<Vector3Int> chunkPositionsToCreate = WorldDataHelper.SelectPositionsToCreate(worldData, allChunkPositionsNeeded, playerPosition);
         List<Vector3Int> chunkDataPositionsToCreate = WorldDataHelper.SelectDataPositionsToCreate(worldData, allChunkDataPositionsNeeded, playerPosition);
 
@@ -107,19 +114,29 @@ public class World : MonoBehaviour
 
     internal BlockType GetBlockFromChunkCoordinates(ChunkData chunkData, int x, int y, int z)
     {
+        // Ova metoda vraća tip bloka specificiranu world koordinatama bloka 
+
         Vector3Int pos = Chunk.ChunkPositionFromBlockCoords(this, x, y, z);
         ChunkData containerChunk = null;
 
+        // Pokušaj pronalaska chunkData iz rječnika koji sadrži chunkData
         worldData.chunkDataDictionary.TryGetValue(pos, out containerChunk);
 
+        // Ukoliko chunkData ne postoji (izvan je trenutno generiranih chunkova)
         if (containerChunk == null)
             return BlockType.Nothing;
+
+        // blockInChunkCoordinates predstavlja poziciju u lokalnom koordinatnom sustavu chunka
         Vector3Int blockInChunkCoordinates = Chunk.GetBlockInChunkCoordinates(containerChunk, new Vector3Int(x, y, z));
+
+        // Vraća se tip bloka na toj poziciji
         return Chunk.GetBlockFromChunkCoordinates(containerChunk, blockInChunkCoordinates);
     }
 
     internal void LoadAdditionalChunksRequest(GameObject player)
     {
+        // Ova metoda se okida za stvaranje chunkova oko igrača
+
         Debug.Log("Load more chunks");
         GenerateWorld(Vector3Int.RoundToInt(player.transform.position));
         OnNewChunksGenerated?.Invoke();

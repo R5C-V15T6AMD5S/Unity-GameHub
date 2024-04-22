@@ -7,7 +7,13 @@ public class Health : MonoBehaviour
     [SerializeField] private GameObject exp;
 
     private int _maxHealth = 100;
+
+    private GameObject _hud;
     
+    private void Start()
+    {
+        _hud = GameObject.FindGameObjectWithTag("HUD");
+    }
 
     public void SetHealth(int maxHealth, int health)    //instantiate values
     {
@@ -21,6 +27,7 @@ public class Health : MonoBehaviour
             throw new System.ArgumentOutOfRangeException("Can't have negative damage!");
         }
         hp -= amount;
+        _hud.GetComponent<HUDManager>().ChangeHealthCount();
         if (hp > 0) return;
         Die();
     }

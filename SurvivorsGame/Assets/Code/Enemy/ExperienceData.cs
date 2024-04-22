@@ -14,6 +14,7 @@ public class ExperienceData : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)  //when player collides with exp exp is added up
     {
         if (!collider.CompareTag("Player")) return;
+        player.GetComponent<PlayerLeveling>().ExpPickup(amount);
         Destroy(gameObject);
     }
 }

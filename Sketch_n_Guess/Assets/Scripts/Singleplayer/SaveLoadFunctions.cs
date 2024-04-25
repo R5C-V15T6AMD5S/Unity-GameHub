@@ -6,6 +6,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveLoadFunctions {
+    // Instead of saving to .txt, .xml, etc.
+    // that can be easily modified,
+    // we used BinaryFormatter for encryption of data
     public static void SavePlayerStats(Player player) {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/PlayerStats.dat";
@@ -17,6 +20,8 @@ public static class SaveLoadFunctions {
         stream.Close();
     }
 
+    // Same as in saving the data,
+    // we just do the opposite and decrypt the data
     public static PlayerData LoadPlayerStats() {
         string path = Application.persistentDataPath + "/PlayerStats.dat";
         

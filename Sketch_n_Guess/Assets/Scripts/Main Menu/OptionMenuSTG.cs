@@ -9,6 +9,9 @@ public class OptionMenuSTG : MonoBehaviour
     Resolution[] resolutions;
     public Dropdown resolutionDropdown;
     int currentResolutionIndex = 0;
+
+    // Because you cant just apply resolutions,
+    // first we need to format them and apply them
     void Start() {
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
@@ -26,18 +29,21 @@ public class OptionMenuSTG : MonoBehaviour
 
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
-        resolutionDropdown.RefreshShownValue();
+        resolutionDropdown.RefreshShownValue(); // Just applying the resolution doesnt nothing, has tio be refreshed
     }
 
+    // Gets the resolutions index from list
     public void SetResolution(int resolutionIndex) {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
+    // Simple bool for the checkbox
     public void SetFullscreen(bool isFullscreen) {
         Screen.fullScreen = isFullscreen;
     }
 
+    // Similar for the fullscreen
     public void EnableSounds(bool soundsEnabled) {
         if(soundsEnabled) {
             AudioListener.volume = 1;

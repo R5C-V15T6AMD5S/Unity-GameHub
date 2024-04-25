@@ -7,6 +7,8 @@ public class LevelButtonManager : MonoBehaviour
 {
     public Color orangeColor = new Color(1f, 0.45f, 0.125f); // Color #FF7420
 
+    // When the level is completed,
+    // it enables it and changes the appearance of it
     public void EnableNextLevelBT(Button[] enableButtonLVL) {
         foreach(Button button in enableButtonLVL) {
             button.interactable = true;

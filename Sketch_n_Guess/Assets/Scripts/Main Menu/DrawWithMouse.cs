@@ -7,8 +7,7 @@ public class DrawWithMouse : MonoBehaviour
     private LineRenderer line;
     private Vector3 previousPosition;
 
-    [SerializeField]
-    private float minDistance = 0.1f;
+    [SerializeField] private float minDistance = 0.1f;
 
     private void Start() {
         line = GetComponent<LineRenderer>();
@@ -16,6 +15,8 @@ public class DrawWithMouse : MonoBehaviour
         previousPosition = transform.position;
     }
 
+    // While the mouse is pressed, it draws
+    // When released, the content gets deleted
     private void Update() {
         if(Input.GetMouseButton(0)) { Draw(); }
         else if(Input.GetMouseButtonUp(0)) { line.positionCount = 0; }

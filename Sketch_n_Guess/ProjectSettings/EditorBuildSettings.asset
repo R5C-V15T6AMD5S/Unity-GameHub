@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Map.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/SingleplayerCanvas.unity
-    guid: 3d5840634274dbe45b7d0ecffb56944b
+    path: Assets/Scenes/Singleplayer.unity
+    guid: 365d72d98b87b3448a6a89a7d40c0488
+  - enabled: 1
+    path: Assets/Scenes/Multiplayer Room.unity
+    guid: d1a74c45e9a8ab2c7a5c8017fc84256c
   m_configObjects: {}

@@ -25,7 +25,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnClickCreate() {
         if(roomIF.text.Length >= 1) {
-            PhotonNetwork.CreateRoom(roomIF.text, new RoomOptions(){ MaxPlayers = 3});
+            PhotonNetwork.CreateRoom(roomIF.text);
+            //PhotonNetwork.CreateRoom(roomIF.text, new RoomOptions(){ MaxPlayers = 3});
         }
     }
 
@@ -54,7 +55,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void JoinRoom(string roomName) {
+    public void JoinRoomName(string roomName) {
         PhotonNetwork.JoinRoom(roomName);
     }
 

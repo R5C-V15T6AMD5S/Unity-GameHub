@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 4747743507380966971}
   - component: {fileID: 6863299091851496471}
   - component: {fileID: 9139220891406857429}
-  - component: {fileID: 110883987434759476}
+  - component: {fileID: -5009023574060905513}
   m_Layer: 0
   m_Name: RoomItems
   m_TagString: Untagged
@@ -203,7 +203,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 110883987434759476}
+      - m_Target: {fileID: -5009023574060905513}
         m_TargetAssemblyTypeName: RoomItems, Assembly-CSharp
         m_MethodName: OnClickItem
         m_Mode: 1
@@ -215,7 +215,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &110883987434759476
+--- !u!114 &-5009023574060905513
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

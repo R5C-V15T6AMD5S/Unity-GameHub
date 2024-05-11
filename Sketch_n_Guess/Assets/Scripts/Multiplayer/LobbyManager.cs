@@ -11,6 +11,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public GameObject lobbyPannel;
     public GameObject roomPanel;
     public Text roomName;
+    public Text createRoomTXT;
 
     public RoomItems roomItemsPrefab;
     List<RoomItems> roomItemsList = new List<RoomItems>();
@@ -32,6 +33,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void OnClickCreate() {
         if(roomIF.text.Length >= 1) {
             //PhotonNetwork.CreateRoom(roomIF.text);
+            createRoomTXT.text = "Creating Room...";
             PhotonNetwork.CreateRoom(roomIF.text, new RoomOptions(){ MaxPlayers = 4});
         }
     }

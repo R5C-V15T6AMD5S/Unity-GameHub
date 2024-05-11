@@ -7,7 +7,7 @@ public class Line : MonoBehaviour
 {
     public LineRenderer lineRenderer; // line renderer objekt
 
-    List<Vector2> points; 
+    List<Vector2> points;
     
     public void updatePosition(Vector2 position) {
         if (points == null) {
@@ -31,5 +31,4 @@ public class Line : MonoBehaviour
         lineRenderer.positionCount = points.Count;
         lineRenderer.SetPosition(points.Count - 1, point);
     }
-
 }

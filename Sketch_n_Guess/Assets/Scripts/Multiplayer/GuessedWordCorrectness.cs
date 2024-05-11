@@ -7,7 +7,6 @@ using TMPro;
 
 public class GuessedWordCorrectness : MonoBehaviour
 {
-    // GameObjects used to render and proces the word
     public TMP_Text displayText;
 
     // Private strings to check the correctness of it
@@ -32,12 +31,11 @@ public class GuessedWordCorrectness : MonoBehaviour
 
             for (int i = 0; i < guess.Length; i++) {
                 if(wordToGuess[i] == guess[i]) {
-                    // Replace the underscore in the displayed text with the guessed character
                     updatedText[i * 2] = wordToGuess[i];
                 }
             }
 
-            displayText.text = updatedText.ToString();
+            displayText.text = updatedText.ToString().ToUpper();
         }
     }
 }

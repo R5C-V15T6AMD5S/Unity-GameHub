@@ -8,10 +8,10 @@ public class LineGenerator : MonoBehaviour
     public GameObject linePrefab;
 
     // referenca na aktivnu liniju
-    Line activeLine;
+    private Line activeLine;
 
     // referenca na aktivni canvas
-    RectTransform canvasRect;
+    private RectTransform canvasRect;
 
     void Start() {
         // uzima RectTransform komponentu od canvasa

@@ -9,6 +9,7 @@ public class ChatManager : MonoBehaviour
     public InputField inputMessage;
     public GameObject UserMessages;
     public GameObject Content;
+    public GuessedWordCorrectness wordCorrectness; 
 
     private void Start() {
         // Add event listener for the end of edit (when user finishes editing)
@@ -24,6 +25,9 @@ public class ChatManager : MonoBehaviour
     
     public void SendMessage() {
         GetComponent<PhotonView>().RPC("GetMessage", RpcTarget.All, (PhotonNetwork.NickName + ": " + inputMessage.text)); 
+
+        // Call the OnSubmit method of the WordGuessingGame script
+        wordCorrectness.CheckWordCorrectnessOnSubmit(inputMessage);
 
         inputMessage.text = "";
     }

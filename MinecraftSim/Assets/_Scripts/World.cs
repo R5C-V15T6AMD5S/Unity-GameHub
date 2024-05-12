@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -40,16 +42,16 @@ public class World : MonoBehaviour
         };
     }
 
-    public void GenerateWorld()
+    public async void GenerateWorld()
     {
         // Na početku se prosljeđuje inicijalna pozicija igrača (0)
-        GenerateWorld(Vector3Int.zero);
+        await GenerateWorld(Vector3Int.zero);
     }
 
-    private void GenerateWorld(Vector3Int position)
+    private async Task GenerateWorld(Vector3Int position)
     {
         // Dohvaćaju se potrebni chunkovi i podaci chunkova
-        WorldGenerationData worldGenerationData = GetPositionsThatPlayerSees(position);
+        WorldGenerationData worldGenerationData = await Task.Run(() => GetPositionsThatPlayerSees(position));
 
         // Brišu se nepotrebni chunkovi
         foreach (Vector3Int pos in worldGenerationData.chunkPositionsToRemove)
@@ -63,17 +65,23 @@ public class World : MonoBehaviour
             WorldDataHelper.RemoveChunkData(this, pos);
         }
 
-        // Generacija potrebnih chunkova
-        foreach (var pos in worldGenerationData.chunkDataPositionsToCreate)
+        /* 
+            dataDictionary sadrži potrebne generirane chunkove.
+            ConcurrentDictionary je threadsafe collection. Može se koristiti koliko se želi podijeliti kalkulacija potrebnih chunkova između različitih dretvi.
+            U tom slučaju, te dretve mogu pristupiti dataDictionary s obzirom da je ConcurrentDictionary.
+        */
+        ConcurrentDictionary<Vector3Int, ChunkData> dataDictionary = await CalculateWorldChunkData(worldGenerationData.chunkDataPositionsToCreate);
+
+        // Dodavanje generiranih chunkova na glavnoj dretvi (s obzirom da je dodavanje puno jeftinije od kalkulacija za generiranje chunkova)
+        foreach (var calculatedData in dataDictionary)
         {
-            ChunkData data = new ChunkData(chunkSize, chunkHeight, this, pos);
-            ChunkData newData = terrainGenerator.GenerateChunkData(data, mapSeedOffset);
-            worldData.chunkDataDictionary.Add(pos, newData);
+            // Key je pozicija, Value su podaci (chunkovi)
+            worldData.chunkDataDictionary.Add(calculatedData.Key, calculatedData.Value);
         }
 
         Dictionary<Vector3Int, MeshData> meshDataDictionary = new Dictionary<Vector3Int, MeshData>();
 
-        // Generacija potrebnih podataka chunkova
+        // Generacija potrebnih podataka chunkova (mesheva)
         foreach (Vector3Int pos in worldGenerationData.chunkPositionsToCreate)
         {
             ChunkData data = worldData.chunkDataDictionary[pos];
@@ -84,13 +92,32 @@ public class World : MonoBehaviour
         StartCoroutine(ChunkCreationCoroutine(meshDataDictionary));
     }
 
+    private Task<ConcurrentDictionary<Vector3Int, ChunkData>> CalculateWorldChunkData(List<Vector3Int> chunkDataPositionsToCreate)
+    {
+        // Ova metoda generira potrebne chunkove na zasebnoj dretvi, te vraća rječnik koji sadrži poziciju (ključ) i generirane chunkove (value)
+
+        ConcurrentDictionary<Vector3Int, ChunkData> dictionary = new ConcurrentDictionary<Vector3Int, ChunkData>();
+
+        return Task.Run(() => {
+            foreach (Vector3Int pos in chunkDataPositionsToCreate)
+            {
+                ChunkData data = new ChunkData(chunkSize, chunkHeight, this, pos);
+                ChunkData newData = terrainGenerator.GenerateChunkData(data, mapSeedOffset);
+
+                // S obzirom da je ConcurrentDictionary (može se u njemu dodavati iz mnogo zasebnih dretvi), koristi se TryAdd
+                dictionary.TryAdd(pos, newData);
+            }
+            return dictionary;
+        });
+    }
+
     IEnumerator ChunkCreationCoroutine(Dictionary<Vector3Int, MeshData> meshDataDictionary)
     {
         foreach (var item in meshDataDictionary)
         {
             CreateChunk(worldData, item.Key, item.Value);
 
-            // Po pojedinom frame-u se renderira 1 chunk
+            // Po pojedinom frame-u se renderira 1 chunk, zaustavlja se do kraja trenutnog frame-a
             yield return new WaitForEndOfFrame();
         }
 

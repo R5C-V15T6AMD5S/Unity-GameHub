@@ -6,6 +6,7 @@ using System.Linq;
 public class Line : MonoBehaviour
 {
     public LineRenderer lineRenderer; // line renderer objekt
+    public Material lineMaterial;
 
     List<Vector2> points;
     

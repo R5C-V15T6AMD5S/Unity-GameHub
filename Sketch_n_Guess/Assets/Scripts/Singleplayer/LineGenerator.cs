@@ -11,7 +11,7 @@ public class LineGenerator : MonoBehaviour
     private Line activeLine;
 
     // referenca na aktivni canvas
-    private RectTransform canvasRect;
+    [SerializeField] private RectTransform canvasRect;
 
     void Start() {
         // uzima RectTransform komponentu od canvasa
@@ -37,14 +37,4 @@ public class LineGenerator : MonoBehaviour
             activeLine.updatePosition(mousePos);
         }
     }
-
-    // funkcija za limitiranje linije u samom canvasu
-    /*Vector2 GetClampedMousePosition() {
-        Vector2 mousePos = Input.mousePosition;
-        Vector2 clampedMousePos = new Vector2(
-            Mathf.Clamp(mousePos.x, canvasRect.position.x - canvasRect.sizeDelta.x / 2f, canvasRect.position.x + canvasRect.sizeDelta.x / 2f),
-            Mathf.Clamp(mousePos.y, canvasRect.position.y - canvasRect.sizeDelta.y / 2f, canvasRect.position.y + canvasRect.sizeDelta.y / 2f)
-        );
-        return clampedMousePos;
-    }*/
 }

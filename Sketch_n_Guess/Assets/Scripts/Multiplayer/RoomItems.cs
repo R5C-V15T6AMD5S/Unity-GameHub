@@ -8,7 +8,7 @@ public class RoomItems : MonoBehaviour
     public Text roomName;
     LobbyManager lobbyManager;
 
-    public void Start() {
+    private void Start() {
         lobbyManager = FindObjectOfType<LobbyManager>();
     }
 

@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,7 +26,8 @@ public class World : MonoBehaviour
     public UnityEvent OnWorldCreated, OnNewChunksGenerated;
 
     // Struktura koja sadrži podatke o svijetu
-    public WorldData worldData { get; private set; } 
+    public WorldData worldData { get; private set; }
+    public bool IsWorldCreated { get; private set; }
 
     private void Awake()
     {
@@ -68,19 +71,45 @@ public class World : MonoBehaviour
             worldData.chunkDataDictionary.Add(pos, newData);
         }
 
+        Dictionary<Vector3Int, MeshData> meshDataDictionary = new Dictionary<Vector3Int, MeshData>();
+
         // Generacija potrebnih podataka chunkova
-        foreach (var pos in worldGenerationData.chunkPositionsToCreate)
+        foreach (Vector3Int pos in worldGenerationData.chunkPositionsToCreate)
         {
             ChunkData data = worldData.chunkDataDictionary[pos];
             MeshData meshData = Chunk.GetChunkMeshData(data);
-            GameObject chunkObject = Instantiate(chunkPrefab, pos, Quaternion.identity);
-            ChunkRenderer chunkRenderer = chunkObject.GetComponent<ChunkRenderer>();
-            worldData.chunkDictionary.Add(pos, chunkRenderer);
-            chunkRenderer.InitializeChunk(data);
-            chunkRenderer.UpdateChunk(meshData);
+            meshDataDictionary.Add(pos, meshData);
         }
 
-        OnWorldCreated?.Invoke();
+        StartCoroutine(ChunkCreationCoroutine(meshDataDictionary));
+    }
+
+    IEnumerator ChunkCreationCoroutine(Dictionary<Vector3Int, MeshData> meshDataDictionary)
+    {
+        foreach (var item in meshDataDictionary)
+        {
+            CreateChunk(worldData, item.Key, item.Value);
+
+            // Po pojedinom frame-u se renderira 1 chunk
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (IsWorldCreated == false)
+        {
+            IsWorldCreated = true;
+
+            // Igrač će se spawnati tek kad se generiraju svi potrebni početni chunkovi
+            OnWorldCreated?.Invoke();
+        }
+    }
+
+    private void CreateChunk(WorldData worldData, Vector3Int position, MeshData meshData)
+    {
+        GameObject chunkObject = Instantiate(chunkPrefab, position, Quaternion.identity);
+        ChunkRenderer chunkRenderer = chunkObject.GetComponent<ChunkRenderer>();
+        worldData.chunkDictionary.Add(position, chunkRenderer);
+        chunkRenderer.InitializeChunk(worldData.chunkDataDictionary[position]);
+        chunkRenderer.UpdateChunk(meshData);
     }
 
     private WorldGenerationData GetPositionsThatPlayerSees(Vector3Int playerPosition)

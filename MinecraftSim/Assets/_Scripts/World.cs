@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -79,22 +80,41 @@ public class World : MonoBehaviour
             worldData.chunkDataDictionary.Add(calculatedData.Key, calculatedData.Value);
         }
 
-        Dictionary<Vector3Int, MeshData> meshDataDictionary = new Dictionary<Vector3Int, MeshData>();
+        ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary = new ConcurrentDictionary<Vector3Int, MeshData>();
 
-        // Generacija potrebnih podataka chunkova (mesheva)
-        foreach (Vector3Int pos in worldGenerationData.chunkPositionsToCreate)
-        {
-            ChunkData data = worldData.chunkDataDictionary[pos];
-            MeshData meshData = Chunk.GetChunkMeshData(data);
-            meshDataDictionary.Add(pos, meshData);
-        }
+        // Izabiru se samo key-value parovi koji se nalaze u chunkPositionsToCreate (gleda se po poziciji), od njih se izabire vrijednost ChunkData i pretvaraju se u listu
+        List<ChunkData> dataToRender = worldData.chunkDataDictionary
+            .Where(keyvaluepair => worldGenerationData.chunkPositionsToCreate.Contains(keyvaluepair.Key))
+            .Select(keyvaluepair => keyvaluepair.Value)
+            .ToList();
+
+        meshDataDictionary = await CreateMeshDataAsync(dataToRender);
 
         StartCoroutine(ChunkCreationCoroutine(meshDataDictionary));
     }
 
+    private Task<ConcurrentDictionary<Vector3Int, MeshData>> CreateMeshDataAsync(List<ChunkData> dataToRender)
+    {
+        // Ova metoda generira potrebne mesheve za chunkove koji su potrebni. Vraća rječnik koji sadrži poziciju (ključ) i generirane mesheve (vrijednost)
+
+        ConcurrentDictionary<Vector3Int, MeshData> dictionary = new ConcurrentDictionary<Vector3Int, MeshData>();
+
+        return Task.Run(() => {
+
+            // Generacija potrebnih podataka chunkova (mesheva)
+            foreach (ChunkData data in dataToRender)
+            {
+                MeshData meshData = Chunk.GetChunkMeshData(data);
+                dictionary.TryAdd(data.worldPosition, meshData);
+            }
+
+            return dictionary;
+        });
+    }
+
     private Task<ConcurrentDictionary<Vector3Int, ChunkData>> CalculateWorldChunkData(List<Vector3Int> chunkDataPositionsToCreate)
     {
-        // Ova metoda generira potrebne chunkove na zasebnoj dretvi, te vraća rječnik koji sadrži poziciju (ključ) i generirane chunkove (value)
+        // Ova metoda generira potrebne chunkove na zasebnoj dretvi, te vraća rječnik koji sadrži poziciju (ključ) i generirane chunkove (vrijednost)
 
         ConcurrentDictionary<Vector3Int, ChunkData> dictionary = new ConcurrentDictionary<Vector3Int, ChunkData>();
 
@@ -111,8 +131,10 @@ public class World : MonoBehaviour
         });
     }
 
-    IEnumerator ChunkCreationCoroutine(Dictionary<Vector3Int, MeshData> meshDataDictionary)
+    IEnumerator ChunkCreationCoroutine(ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary)
     {
+        // U ovoj metodi se za pojedini MeshData poziva CreateChunk koji renderira taj MeshData (odnosno chunk)
+
         foreach (var item in meshDataDictionary)
         {
             CreateChunk(worldData, item.Key, item.Value);
@@ -132,6 +154,8 @@ public class World : MonoBehaviour
 
     private void CreateChunk(WorldData worldData, Vector3Int position, MeshData meshData)
     {
+        // U ovoj metodi se renderira pojedini MeshData (odnosno chunk)
+
         GameObject chunkObject = Instantiate(chunkPrefab, position, Quaternion.identity);
         ChunkRenderer chunkRenderer = chunkObject.GetComponent<ChunkRenderer>();
         worldData.chunkDictionary.Add(position, chunkRenderer);
@@ -189,12 +213,12 @@ public class World : MonoBehaviour
         return Chunk.GetBlockFromChunkCoordinates(containerChunk, blockInChunkCoordinates);
     }
 
-    internal void LoadAdditionalChunksRequest(GameObject player)
+    internal async void LoadAdditionalChunksRequest(GameObject player)
     {
         // Ova metoda se okida za stvaranje chunkova oko igrača
 
         Debug.Log("Load more chunks");
-        GenerateWorld(Vector3Int.RoundToInt(player.transform.position));
+        await GenerateWorld(Vector3Int.RoundToInt(player.transform.position));
         OnNewChunksGenerated?.Invoke();
     }
 

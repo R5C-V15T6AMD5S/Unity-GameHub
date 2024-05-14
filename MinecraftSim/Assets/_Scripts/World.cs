@@ -21,6 +21,9 @@ public class World : MonoBehaviour
 
     // Prefab korišten za instanciranje chunkova
     public GameObject chunkPrefab;
+
+    // worldRenderer varijabla služi za ponovno iskorištenje starih iskorištenih chunkova
+    public WorldRenderer worldRenderer;
     public TerrainGenerator terrainGenerator;
 
     // Offset mape, korišten za proceduralnu generaciju
@@ -188,13 +191,10 @@ public class World : MonoBehaviour
 
     private void CreateChunk(WorldData worldData, Vector3Int position, MeshData meshData)
     {
-        // U ovoj metodi se renderira pojedini MeshData (odnosno chunk)
+        // U ovoj metodi se poziva worldRenderer.RenderChunk koji renderira pojedini MeshData. U rječnik se dodaje chunkRenderer koji je vraćen iz spomenute metode na odgovarajuću poziciju
 
-        GameObject chunkObject = Instantiate(chunkPrefab, position, Quaternion.identity);
-        ChunkRenderer chunkRenderer = chunkObject.GetComponent<ChunkRenderer>();
+        ChunkRenderer chunkRenderer = worldRenderer.RenderChunk(worldData, position, meshData);
         worldData.chunkDictionary.Add(position, chunkRenderer);
-        chunkRenderer.InitializeChunk(worldData.chunkDataDictionary[position]);
-        chunkRenderer.UpdateChunk(meshData);
     }
 
     private WorldGenerationData GetPositionsThatPlayerSees(Vector3Int playerPosition)
@@ -256,11 +256,6 @@ public class World : MonoBehaviour
         OnNewChunksGenerated?.Invoke();
     }
 
-    internal void RemoveChunk(ChunkRenderer chunk)
-    {
-        chunk.gameObject.SetActive(false);
-    }
-
     public void OnDisable()
     {
         // Ova metoda se poziva kada se zaustavi editor (zajedno sa metodom OnDestroy())
@@ -276,12 +271,12 @@ public class World : MonoBehaviour
         public List<Vector3Int> chunkPositionsToRemove;
         public List<Vector3Int> chunkDataToRemove;
     }
+}
 
-    public struct WorldData
-    {
-        public Dictionary<Vector3Int, ChunkData> chunkDataDictionary;
-        public Dictionary<Vector3Int, ChunkRenderer> chunkDictionary;
-        public int chunkSize;
-        public int chunkHeight;
-    }
+public struct WorldData
+{
+    public Dictionary<Vector3Int, ChunkData> chunkDataDictionary;
+    public Dictionary<Vector3Int, ChunkRenderer> chunkDictionary;
+    public int chunkSize;
+    public int chunkHeight;
 }

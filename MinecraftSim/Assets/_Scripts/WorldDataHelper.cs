@@ -86,7 +86,7 @@ public static class WorldDataHelper
         return chunkDataPositionsToCreate;
     }
 
-    internal static List<Vector3Int> GetUnneededChunks(World.WorldData worldData, List<Vector3Int> allChunkPositionsNeeded)
+    internal static List<Vector3Int> GetUnneededChunks(WorldData worldData, List<Vector3Int> allChunkPositionsNeeded)
     {
         // Ova metoda pronalazi i vraća pozicije chunkova koje više nisu potrebne.
 
@@ -102,7 +102,7 @@ public static class WorldDataHelper
         return positionToRemove;
     }
 
-    internal static List<Vector3Int> GetUnneededData(World.WorldData worldData, List<Vector3Int> allChunkDataPositionsNeeded)
+    internal static List<Vector3Int> GetUnneededData(WorldData worldData, List<Vector3Int> allChunkDataPositionsNeeded)
     {
         // Ova metoda pronalazi i vraća pozicije podataka chunkova koje više nisu potrebne.
 
@@ -118,7 +118,7 @@ public static class WorldDataHelper
         ChunkRenderer chunk = null;
         if (world.worldData.chunkDictionary.TryGetValue(pos, out chunk))
         {
-            world.RemoveChunk(chunk);
+            world.worldRenderer.RemoveChunk(chunk);
             world.worldData.chunkDictionary.Remove(pos);
         }
     }
@@ -130,14 +130,14 @@ public static class WorldDataHelper
         world.worldData.chunkDataDictionary.Remove(pos);
     }
 
-    internal static List<Vector3Int> SelectDataPositionsToCreate(World.WorldData worldData, List<Vector3Int> allChunkDataPositionsNeeded, Vector3Int playerPosition)
+    internal static List<Vector3Int> SelectDataPositionsToCreate(WorldData worldData, List<Vector3Int> allChunkDataPositionsNeeded, Vector3Int playerPosition)
     {
         // Ova metoda bira podatke chunkova koji se trebaju stvoriti s obzirom na blizinu igrača. Sortira ih, te vraća listu tih podataka.
 
         return allChunkDataPositionsNeeded.Where(pos => worldData.chunkDataDictionary.ContainsKey(pos) == false).OrderBy(pos => Vector3.Distance(playerPosition, pos)).ToList();
     }
 
-    internal static List<Vector3Int> SelectPositionsToCreate(World.WorldData worldData, List<Vector3Int> allChunkPositionsNeeded, Vector3Int playerPosition)
+    internal static List<Vector3Int> SelectPositionsToCreate(WorldData worldData, List<Vector3Int> allChunkPositionsNeeded, Vector3Int playerPosition)
     {
         // Ova metoda bira chunkove koji se trebaju stvoriti s obzirom na blizinu igrača. Sortira ih, te vraća listu tih podataka.
 

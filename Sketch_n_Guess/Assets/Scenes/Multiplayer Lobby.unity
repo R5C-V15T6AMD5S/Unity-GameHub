@@ -1963,7 +1963,7 @@ MonoBehaviour:
   roomPanel: {fileID: 401133049}
   roomName: {fileID: 156550014}
   createRoomTXT: {fileID: 743688815}
-  roomItemsPrefab: {fileID: 8614311705287248252, guid: 3822edbe1fd182b148f6473f61ac84bb, type: 3}
+  roomItemsPrefab: {fileID: -1656109952609363780, guid: 3822edbe1fd182b148f6473f61ac84bb, type: 3}
   contentObject: {fileID: 1895849299}
   playerItemsList: []
   playerItemsPrefab: {fileID: 5212447329459321970, guid: 83cea8d0438ea88e886e0575d771afec, type: 3}

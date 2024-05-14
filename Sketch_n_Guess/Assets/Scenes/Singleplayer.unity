@@ -885,6 +885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linePrefab: {fileID: 4397926889081795199, guid: e74357e3bd761ce4181957de3aa57ec2, type: 3}
+  lineMaterial: {fileID: 2100000, guid: 86dfe30d8b8b5294e9c2961d914ae769, type: 2}
 --- !u!4 &1899151229
 Transform:
   m_ObjectHideFlags: 0

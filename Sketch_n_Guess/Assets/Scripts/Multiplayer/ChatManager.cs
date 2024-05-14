@@ -7,8 +7,8 @@ using Photon.Pun;
 public class ChatManager : MonoBehaviour
 {
     public InputField inputMessage;
-    public GameObject UserMessages;
-    public GameObject Content;
+    public GameObject UserMessages; // Message prefab
+    public GameObject Content; // Where the Message prefab will be diplay
     public GuessedWordCorrectness wordCorrectness; 
 
     private void Start() {
@@ -32,6 +32,10 @@ public class ChatManager : MonoBehaviour
         inputMessage.text = "";
     }
 
+    /*
+        When receives message from user,
+        uses the message prefab to display it.
+    */
     [PunRPC]
     public void GetMessage(string ReceiveMessage) {
         GameObject M = Instantiate(UserMessages, Vector3.zero, Quaternion.identity, Content.transform);

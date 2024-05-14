@@ -9,6 +9,7 @@ public class PlayerItems : MonoBehaviourPunCallbacks
 {
     public Text playerName;
 
+    // Sets the player name (didn't work without Photon.Realtime)
     public void SetPlayerInfo(Photon.Realtime.Player _player) {
         playerName.text = _player.NickName;
     }

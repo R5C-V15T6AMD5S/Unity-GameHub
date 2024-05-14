@@ -38,6 +38,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
+    // When users joins the room + user list gets updated
     public override void OnJoinedRoom() {
         lobbyPannel.SetActive(false);
         roomPanel.SetActive(true);
@@ -45,6 +46,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         UpdatePlayerList();
     }
 
+    // Update the room list after while
     public override void OnRoomListUpdate(List<RoomInfo> roomList) {
         if(Time.time >= nextUpdateTime) {
             UpdateRoomList(roomList);
@@ -52,7 +54,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    void UpdateRoomList(List<RoomInfo> list) {
+ć    void UpdateRoomList(List<RoomInfo> list) {
         foreach(RoomItems item in roomItemsList) {
             Destroy(item.gameObject);
         } roomItemsList.Clear();
@@ -82,6 +84,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     void UpdatePlayerList() {
+        // Clear the room list so it can be nicely displayed
         foreach(PlayerItems item in playerItemsList) {
             Destroy(item.gameObject);
         } playerItemsList.Clear();
@@ -96,14 +99,17 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
+    // When user joins room, updates the list (adds him to the list)
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) {
         UpdatePlayerList();
     }
 
+    // When user leaves room, updates the list (removes him from the list)
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) {
         UpdatePlayerList();
     }
 
+    // Only who created the room, can start the game
     private void Update() {
         if(PhotonNetwork.IsMasterClient) {
             playButton.SetActive(true);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,6 +25,10 @@ public class World : MonoBehaviour
 
     // Offset mape, korišten za proceduralnu generaciju
     public Vector2Int mapSeedOffset;
+
+    // CancelationTokenSource sadrži člansku varijablu Token koji sadrži člansku varijablu IsCancellationRequested (ako je true, želi se otkazati Task)
+    //Pomoću taskTokenSource će se zaustavljati task-ovi (npr. prilikom naglog zaustavljanja Unity editora)
+    CancellationTokenSource taskTokenSource = new CancellationTokenSource();
 
     // Događaji koji se okidaju prilikom generacije svijeta i generacije novih chunkova respektivno
     public UnityEvent OnWorldCreated, OnNewChunksGenerated;
@@ -51,8 +56,8 @@ public class World : MonoBehaviour
 
     private async Task GenerateWorld(Vector3Int position)
     {
-        // Dohvaćaju se potrebni chunkovi i podaci chunkova
-        WorldGenerationData worldGenerationData = await Task.Run(() => GetPositionsThatPlayerSees(position));
+        // Dohvaćaju se potrebni chunkovi i podaci chunkova, prosljeđuje se i Token članska varijabla taskTokenSource-a kako bi se mogao zaustaviti Task
+        WorldGenerationData worldGenerationData = await Task.Run(() => GetPositionsThatPlayerSees(position), taskTokenSource.Token);
 
         // Brišu se nepotrebni chunkovi
         foreach (Vector3Int pos in worldGenerationData.chunkPositionsToRemove)
@@ -71,7 +76,17 @@ public class World : MonoBehaviour
             ConcurrentDictionary je threadsafe collection. Može se koristiti koliko se želi podijeliti kalkulacija potrebnih chunkova između različitih dretvi.
             U tom slučaju, te dretve mogu pristupiti dataDictionary s obzirom da je ConcurrentDictionary.
         */
-        ConcurrentDictionary<Vector3Int, ChunkData> dataDictionary = await CalculateWorldChunkData(worldGenerationData.chunkDataPositionsToCreate);
+        ConcurrentDictionary<Vector3Int, ChunkData> dataDictionary = null;
+
+        try 
+        {
+            dataDictionary = await CalculateWorldChunkData(worldGenerationData.chunkDataPositionsToCreate);
+        } 
+        catch (Exception) 
+        {
+            Debug.Log("Task cancelled");
+            return;
+        }
 
         // Dodavanje generiranih chunkova na glavnoj dretvi (s obzirom da je dodavanje puno jeftinije od kalkulacija za generiranje chunkova)
         foreach (var calculatedData in dataDictionary)
@@ -88,7 +103,15 @@ public class World : MonoBehaviour
             .Select(keyvaluepair => keyvaluepair.Value)
             .ToList();
 
-        meshDataDictionary = await CreateMeshDataAsync(dataToRender);
+        try 
+        {
+            meshDataDictionary = await CreateMeshDataAsync(dataToRender);
+        } 
+        catch (Exception) 
+        {
+            Debug.Log("Task cancelled");
+            return;
+        }
 
         StartCoroutine(ChunkCreationCoroutine(meshDataDictionary));
     }
@@ -104,12 +127,16 @@ public class World : MonoBehaviour
             // Generacija potrebnih podataka chunkova (mesheva)
             foreach (ChunkData data in dataToRender)
             {
+                if (taskTokenSource.Token.IsCancellationRequested) {
+                    taskTokenSource.Token.ThrowIfCancellationRequested();
+                }
                 MeshData meshData = Chunk.GetChunkMeshData(data);
                 dictionary.TryAdd(data.worldPosition, meshData);
             }
 
             return dictionary;
-        });
+        }, taskTokenSource.Token
+        );
     }
 
     private Task<ConcurrentDictionary<Vector3Int, ChunkData>> CalculateWorldChunkData(List<Vector3Int> chunkDataPositionsToCreate)
@@ -119,8 +146,14 @@ public class World : MonoBehaviour
         ConcurrentDictionary<Vector3Int, ChunkData> dictionary = new ConcurrentDictionary<Vector3Int, ChunkData>();
 
         return Task.Run(() => {
+            // Prosljeđivanje taskTokenSource.Token kao drugog parametra Tasku, osigurava da će sustav automatski zaustaviti planiranje ovog zadatka (scheduling) kada se Token prekine
+
             foreach (Vector3Int pos in chunkDataPositionsToCreate)
             {
+                if (taskTokenSource.Token.IsCancellationRequested) 
+                {
+                    taskTokenSource.Token.ThrowIfCancellationRequested();
+                }
                 ChunkData data = new ChunkData(chunkSize, chunkHeight, this, pos);
                 ChunkData newData = terrainGenerator.GenerateChunkData(data, mapSeedOffset);
 
@@ -128,7 +161,8 @@ public class World : MonoBehaviour
                 dictionary.TryAdd(pos, newData);
             }
             return dictionary;
-        });
+        }, taskTokenSource.Token
+        );
     }
 
     IEnumerator ChunkCreationCoroutine(ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary)
@@ -225,6 +259,14 @@ public class World : MonoBehaviour
     internal void RemoveChunk(ChunkRenderer chunk)
     {
         chunk.gameObject.SetActive(false);
+    }
+
+    public void OnDisable()
+    {
+        // Ova metoda se poziva kada se zaustavi editor (zajedno sa metodom OnDestroy())
+
+        // isCancellationRequested unutar Token članske varijable se postavlja na true
+        taskTokenSource.Cancel();
     }
 
     public struct WorldGenerationData

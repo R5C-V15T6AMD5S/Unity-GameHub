@@ -16,6 +16,25 @@ public static class WorldDataHelper
         };
     }
 
+    internal static void SetBlock(World worldReference, Vector3Int pos, BlockType blockType)
+    {
+        ChunkData chunkData = GetChunkData(worldReference, pos);
+        if (chunkData != null)
+        {
+            Vector3Int localPosition = Chunk.GetBlockInChunkCoordinates(chunkData, pos);
+            Chunk.SetBlock(chunkData, localPosition, blockType);
+        }
+    }
+
+    private static ChunkData GetChunkData(World worldReference, Vector3Int pos)
+    {
+        Vector3Int chunkPosition = ChunkPositionFromBlockCoords(worldReference, pos);
+        ChunkData containerChunk = null;
+        worldReference.worldData.chunkDataDictionary.TryGetValue(chunkPosition, out containerChunk);
+
+        return containerChunk;
+    }
+
     internal static List<Vector3Int> GetChunkPositionsAroundPlayer(World world, Vector3Int playerPosition)
     {
         int startX = playerPosition.x - (world.chunkDrawingRangen) * world.chunkSize;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +21,9 @@ public class BiomeGenerator : MonoBehaviour
     // Handleri dodatnih blokova
     public List<BlockLayerHandler> additionalLayerHandlers;
 
+    // Ukoliko se ne želi postavljati stabla u određenom biomu, treeGenerator se postavlja na null vrijednost
+    public TreeGenerator treeGenerator;
+
     public ChunkData ProcessChunkColumn(ChunkData data, int x, int z, Vector2Int mapSeedOffset)
     {
         // Ova metoda prerađuje stupac u chunku zadajući tip bloka za svaki blok unutar chunka baziranim na visini terena.
@@ -32,7 +36,7 @@ public class BiomeGenerator : MonoBehaviour
         // Pomoću sustava "Chain Of Responsibility" odlučuje se na temelju visine koji tip bloka postaviti
         for (int y = 0; y < data.chunkHeight; y++)
         {
-        startLayerHandler.Handle(data, x, y, z, groundPosition, mapSeedOffset);
+            startLayerHandler.Handle(data, x, y, z, groundPosition, mapSeedOffset);
         }
 
         // Postavljanje dodatnih tipa blokova (npr. "kamen")
@@ -41,6 +45,12 @@ public class BiomeGenerator : MonoBehaviour
             layer.Handle(data, x, data.worldPosition.y, z, groundPosition, mapSeedOffset);
         }
         return data;
+    }
+
+    internal TreeData GetTreeData(ChunkData data, Vector2Int mapSeedOffset)
+    {
+        if (treeGenerator == null) return new TreeData();
+        return treeGenerator.GenerateTreeData(data, mapSeedOffset);
     }
 
     private int GetSurfaceHeightNoise(int x, int z, int chunkHeight)

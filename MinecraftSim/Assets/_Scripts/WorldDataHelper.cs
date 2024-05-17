@@ -6,15 +6,15 @@ public static class WorldDataHelper
 {
     // Ova klasa pruža korisne metode za upravljanje podacima svijeta i pozicijama chunkova
 
-    public static Vector3Int ChunkPositionFromBlockCoords(World world, Vector3Int position)
+    public static Vector3Int ChunkPositionFromBlockCoords(World world, Vector3Int worldPosition)
     {
         // Ova metoda vraća početne world koordinate chunka
 
         return new Vector3Int
         {
-            x = Mathf.FloorToInt(position.x / (float)world.chunkSize) * world.chunkSize,
-            y = Mathf.FloorToInt(position.y / (float)world.chunkHeight) * world.chunkHeight,
-            z = Mathf.FloorToInt(position.z / (float)world.chunkSize) * world.chunkSize
+            x = Mathf.FloorToInt(worldPosition.x / (float)world.chunkSize) * world.chunkSize,
+            y = Mathf.FloorToInt(worldPosition.y / (float)world.chunkHeight) * world.chunkHeight,
+            z = Mathf.FloorToInt(worldPosition.z / (float)world.chunkSize) * world.chunkSize
         };
     }
 
@@ -142,5 +142,27 @@ public static class WorldDataHelper
         // Ova metoda bira chunkove koji se trebaju stvoriti s obzirom na blizinu igrača. Sortira ih, te vraća listu tih podataka.
 
         return allChunkPositionsNeeded.Where(pos => worldData.chunkDictionary.ContainsKey(pos) == false).OrderBy(pos => Vector3.Distance(playerPosition, pos)).ToList();
+    }
+
+    public static ChunkData GetChunkData(World worldReference, Vector3Int worldBlockPosition)
+    {
+        // U metodi GetChunkData pokušava se dohvatiti chunk koji sadrži blok sa definiranom pozicijom u svijetu
+
+        Vector3Int chunkPosition = ChunkPositionFromBlockCoords(worldReference, worldBlockPosition);
+        ChunkData containerChunk = null;
+        worldReference.worldData.chunkDataDictionary.TryGetValue(chunkPosition, out containerChunk);
+        return containerChunk;
+    }
+
+    internal static void SetBlock(World worldReference, Vector3Int worldBlockPosition, BlockType blockType)
+    {
+        // U ovoj metodi pokušava se postaviti tip bloka na blok sa poznatom pozicijom u svijetu
+
+        ChunkData chunkData = GetChunkData(worldReference, worldBlockPosition);
+        if (chunkData != null)
+        {
+            Vector3Int localPosition = Chunk.GetBlockInChunkCoordinates(chunkData, worldBlockPosition);
+            Chunk.SetBlock(chunkData, localPosition, blockType);
+        }
     }
 }

@@ -98,6 +98,12 @@ public class World : MonoBehaviour
             worldData.chunkDataDictionary.Add(calculatedData.Key, calculatedData.Value);
         }
 
+        // Nakon generacije svih potrebnih chunkova, mogu se dodati lišća. Ovo se radi kako ne bi pristupili chunku koji se još uvijek procesira na zasebnoj dretvi
+        foreach (var chunkData in worldData.chunkDataDictionary.Values)
+        {
+            AddTreeLeafs(chunkData);
+        }
+
         ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary = new ConcurrentDictionary<Vector3Int, MeshData>();
 
         // Izabiru se samo key-value parovi koji se nalaze u chunkPositionsToCreate (gleda se po poziciji), od njih se izabire vrijednost ChunkData i pretvaraju se u listu
@@ -117,6 +123,15 @@ public class World : MonoBehaviour
         }
 
         StartCoroutine(ChunkCreationCoroutine(meshDataDictionary));
+    }
+
+    private void AddTreeLeafs(ChunkData chunkData)
+    {
+        // Za sve pozicije lišća, postavlja se blok lišća
+        foreach (var treeLeafes in chunkData.treeData.treeLeafesSolid)
+        {
+            Chunk.SetBlock(chunkData, treeLeafes, BlockType.TreeLeafsSolid);
+        }
     }
 
     private Task<ConcurrentDictionary<Vector3Int, MeshData>> CreateMeshDataAsync(List<ChunkData> dataToRender)

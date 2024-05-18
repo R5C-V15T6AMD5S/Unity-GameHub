@@ -26,9 +26,10 @@ public static class DataProcessing
         // Lista maximas sadrži svjetske pozicije stabala
         List<Vector2Int> maximas = new List<Vector2Int>();
 
-        for (int x = 0; x < dataMatrix.GetLength(0); x++)
+        // Kreće se od 2 kako bi se popravila greška lijepljenja drveća susjednih chunkova, izbjegava se generiranje drveća uz rub chunka
+        for (int x = 2; x < dataMatrix.GetLength(0); x++)
         {
-            for (int y = 0; y < dataMatrix.GetLength(1); y++)
+            for (int y = 2; y < dataMatrix.GetLength(1); y++)
             {
                 float noiseVal = dataMatrix[x, y];
                 if (CheckNeighbours(dataMatrix, x, y, (neighbourNoise) => neighbourNoise < noiseVal))

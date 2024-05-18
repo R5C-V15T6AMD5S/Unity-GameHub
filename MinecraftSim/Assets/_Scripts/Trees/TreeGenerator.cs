@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class TreeGenerator : MonoBehaviour
@@ -43,7 +44,15 @@ public class TreeGenerator : MonoBehaviour
         {
             for (int z = zMin; z < zMax; z++)
             {
-                noiseMax[xIndex, zIndex] = domainWarping.GenerateDomainNoise(x, z, treeNoiseSettings);
+                // Vrijednosti uz rub chunka gdje se neće generirati drveća postavljaju se na minimalnu vrijednost kako bi se kompenzirao broj stvorenih drveća
+                if (z <= zMin + 1 || z >= zMax - 2 || x <= xMin + 1 || x >= xMax - 2) 
+                {
+                    noiseMax[xIndex, zIndex] = 0;
+                } 
+                else 
+                {
+                    noiseMax[xIndex, zIndex] = domainWarping.GenerateDomainNoise(x, z, treeNoiseSettings);
+                }
                 zIndex++;
             }
             xIndex++;

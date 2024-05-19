@@ -134,6 +134,19 @@ public class World : MonoBehaviour
 
         WorldDataHelper.SetBlock(chunk.ChunkData.worldReference, pos, blockType);
         chunk.modifiedByThePlayer = true;
+
+        if(Chunk.IsOnTheEdge(chunk.ChunkData, pos))
+        {
+            List<ChunkData> neighbourDataList = Chunk.GetEdgeNeighbourChunk(chunk.ChunkData, pos);
+            foreach(var neighbourData in neighbourDataList)
+            {
+                //neighbourData.modifiedByThePlayer = true;
+                ChunkRenderer chunkToUpdate = WorldDataHelper.GetChunk(neighbourData.worldReference, neighbourData.worldPosition);
+                if (chunkToUpdate != null)
+                    chunkToUpdate.UpdateChunk();
+            }
+        }
+
         chunk.UpdateChunk();
         return true;
     }

@@ -21,6 +21,9 @@ public class ChunkData
     // U proceduralno generiranom svijetu, lako se mogu regenerirati chunkovi, međutim u slučaju da igrač napravi izmjene na chunku, spremamo podatke o chunkovima koji su izmijenjeni
     public bool modifiedByThePlayer = false;
 
+    // Podaci o stablima unutar chunka
+    public TreeData treeData;
+
     public ChunkData(int chunkSize, int chunkHeight, World world, Vector3Int worldPosition) {
         this.chunkHeight = chunkHeight;
         this.chunkSize = chunkSize;

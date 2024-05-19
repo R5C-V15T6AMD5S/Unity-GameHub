@@ -73,7 +73,8 @@ public static class Chunk
         }
         else
         {
-            throw new Exception("Need to ask the World for appropriate chunk");
+            // Ukoliko pozicija nije u chunku, provjerava se u svijetu
+            WorldDataHelper.SetBlock(chunkData.worldReference, localPosition + chunkData.worldPosition, block);
         }
     }
 

@@ -52,6 +52,7 @@ public class Health : MonoBehaviour
     private void Die()  //method responsible for death and exp generation
     {
         Debug.Log("Died!");
+        _hud.GetComponent<HUDManager>().ChangeKillCount();
         if (exp != null)
         {
             var newExp = Instantiate(exp, transform.position, Quaternion.identity);

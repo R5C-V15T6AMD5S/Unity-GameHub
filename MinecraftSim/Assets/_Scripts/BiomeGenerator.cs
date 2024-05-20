@@ -33,18 +33,18 @@ public class BiomeGenerator : MonoBehaviour
         // Izračunava se visina terena za trenutnu x i z poziciju unutar chunka
         int groundPosition = GetSurfaceHeightNoise(data.worldPosition.x + x, data.worldPosition.z + z, data.chunkHeight);
                 
-        // Pomoću sustava "Chain Of Responsibility" odlučuje se na temelju visine koji tip bloka postaviti
-        for (int y = 0; y < data.chunkHeight; y++)
-        {
-            startLayerHandler.Handle(data, x, y, z, groundPosition, mapSeedOffset);
-        }
 
-        // Postavljanje dodatnih tipa blokova (npr. "kamen")
-        foreach (var layer in additionalLayerHandlers)
-        {
-            layer.Handle(data, x, data.worldPosition.y, z, groundPosition, mapSeedOffset);
-        }
-        return data;
+                // Pomoću sustava "Chain Of Responsibility" odlučuje se na temelju visine koji tip bloka postaviti
+                for (int y = data.worldPosition.y; y < data.worldPosition.y + data.chunkHeight; y++)
+                {
+                    startLayerHandler.Handle(data, x, y, z, groundPosition, mapSeedOffset);
+                }
+
+                foreach (var layer in additionalLayerHandlers)
+                {
+                    layer.Handle(data, x, data.worldPosition.y, z, groundPosition, mapSeedOffset);
+                }
+                return data;
     }
 
     internal TreeData GetTreeData(ChunkData data, Vector2Int mapSeedOffset)

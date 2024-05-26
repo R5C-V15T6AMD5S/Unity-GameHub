@@ -54,7 +54,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-ć    void UpdateRoomList(List<RoomInfo> list) {
+    public void UpdateRoomList(List<RoomInfo> list) {
         foreach(RoomItems item in roomItemsList) {
             Destroy(item.gameObject);
         } roomItemsList.Clear();

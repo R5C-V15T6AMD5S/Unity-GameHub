@@ -5,13 +5,16 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+    This script is used for those who have Windows
+    Means its Windows OS script ONLY!!!!
+*/
 public class GameLauncher : MonoBehaviour
 {
     // Buttons that user clicks to play a certain game
     public Button sketchGuessButton;
     public Button minecraftSimButton;
     public Button vampireSurvivalButton;
-
 
     /* 
         Base path to the directory containing your executables

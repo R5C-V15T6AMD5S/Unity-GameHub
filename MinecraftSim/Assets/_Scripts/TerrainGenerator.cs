@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
@@ -8,6 +10,17 @@ public class TerrainGenerator : MonoBehaviour
 
     [SerializeField]
     List<Vector3Int> biomeCenters = new List<Vector3Int>();
+
+    // šumovi za svaki centar bioma
+    List<float> biomeNoise = new List<float>();
+
+    [SerializeField]
+    private NoiseSettings biomeNoiseSettings;
+
+    public DomainWarping biomeDomainWarping;
+
+    [SerializeField]
+    private List<BiomeData> biomeGeneratorsData = new List<BiomeData>();
     public ChunkData GenerateChunkData(ChunkData data, Vector2Int mapSeedOffset)
     {
         // Linije koda koje se tiču treeData su postavljene prije 2 for petlje iz razloga jer se želi jednom izračunati vrijednosti šuma.
@@ -35,6 +48,25 @@ public class TerrainGenerator : MonoBehaviour
         biomeCenters = new List<Vector3Int>();
 
         biomeCenters = BiomeCenterFinder.CalculateBiomeCenters(playerPosition, drawRange, mapSize);
+
+        for (int i = 0; i < biomeCenters.Count; i++)
+        {
+            // Dodaju se offseti središtima bioma
+            
+            Vector2Int domainWarpingOffset = biomeDomainWarping.GenerateDomainOffsetInt(biomeCenters[i].x, biomeCenters[i].z);
+            biomeCenters[i] += new Vector3Int(domainWarpingOffset.x, 0, domainWarpingOffset.y);
+        }
+
+        biomeNoise = CalculateBiomeNoise(biomeCenters, mapSeedOffset);
+    }
+
+    private List<float> CalculateBiomeNoise(List<Vector3Int> biomeCenters, Vector2Int mapSeedOffset)
+    {
+        // U ovoj funkciji se računa šum za sve centre bioma (temperaturna vrijednost)
+
+        biomeNoiseSettings.worldOffset = mapSeedOffset;
+        return biomeCenters.Select(center => MyNoise.OctavePerlin(center.x, center.y, biomeNoiseSettings)).ToList();
+        
     }
 
     private void OnDrawGizmos()
@@ -48,4 +80,14 @@ public class TerrainGenerator : MonoBehaviour
             Gizmos.DrawLine(biomCenterPoint, biomCenterPoint + Vector3.up * 255);
         }
     }
+}
+
+[Serializable]
+public struct BiomeData
+{
+    // Na temelju temperaturnih vrijednosti centara bioma, zna se koji je tip bioma
+
+    [Range(0f, 1f)]
+    public float temperatureStartThreshold, temperatureEndThreshold;
+    public BiomeGenerator biomeTerrainGenerator;
 }

@@ -24,27 +24,28 @@ public class BiomeGenerator : MonoBehaviour
     // Ukoliko se ne želi postavljati stabla u određenom biomu, treeGenerator se postavlja na null vrijednost
     public TreeGenerator treeGenerator;
 
-    public ChunkData ProcessChunkColumn(ChunkData data, int x, int z, Vector2Int mapSeedOffset)
+    public ChunkData ProcessChunkColumn(ChunkData data, int x, int z, Vector2Int mapSeedOffset, int? terrainHeightNoise)
     {
         // Ova metoda prerađuje stupac u chunku zadajući tip bloka za svaki blok unutar chunka baziranim na visini terena.
 
         biomeNoiseSettings.worldOffset = mapSeedOffset;
 
-        // Izračunava se visina terena za trenutnu x i z poziciju unutar chunka
-        int groundPosition = GetSurfaceHeightNoise(data.worldPosition.x + x, data.worldPosition.z + z, data.chunkHeight);
-                
+        // Izračunava se visina terena ukoliko već nije za trenutnu x i z poziciju unutar chunka
+        int groundPosition;
+        if (terrainHeightNoise.HasValue == false) groundPosition = GetSurfaceHeightNoise(data.worldPosition.x + x, data.worldPosition.z + z, data.chunkHeight);
+        else groundPosition = terrainHeightNoise.Value;
 
-                // Pomoću sustava "Chain Of Responsibility" odlučuje se na temelju visine koji tip bloka postaviti
-                for (int y = data.worldPosition.y; y < data.worldPosition.y + data.chunkHeight; y++)
-                {
-                    startLayerHandler.Handle(data, x, y, z, groundPosition, mapSeedOffset);
-                }
+        // Pomoću sustava "Chain Of Responsibility" odlučuje se na temelju visine koji tip bloka postaviti
+        for (int y = data.worldPosition.y; y < data.worldPosition.y + data.chunkHeight; y++)
+        {
+            startLayerHandler.Handle(data, x, y, z, groundPosition, mapSeedOffset);
+        }
 
-                foreach (var layer in additionalLayerHandlers)
-                {
-                    layer.Handle(data, x, data.worldPosition.y, z, groundPosition, mapSeedOffset);
-                }
-                return data;
+        foreach (var layer in additionalLayerHandlers)
+        {
+            layer.Handle(data, x, data.worldPosition.y, z, groundPosition, mapSeedOffset);
+        }
+        return data;
     }
 
     internal TreeData GetTreeData(ChunkData data, Vector2Int mapSeedOffset)
@@ -53,7 +54,7 @@ public class BiomeGenerator : MonoBehaviour
         return treeGenerator.GenerateTreeData(data, mapSeedOffset);
     }
 
-    private int GetSurfaceHeightNoise(int x, int z, int chunkHeight)
+    public int GetSurfaceHeightNoise(int x, int z, int chunkHeight)
     {
         // Ova metoda izračunava visinu površine za dane x i z koordinate koristeći generaciju šuma
 

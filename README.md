@@ -11,7 +11,7 @@ Prije samog kodiranja, potrebno je bilo isplanirati i podijeli se u podgrupe za 
 ## Vampire Survival
 
 
-# Ažuriranja
+# Updates
 
 
 # Detalji

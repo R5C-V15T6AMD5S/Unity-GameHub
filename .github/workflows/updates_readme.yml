@@ -1,0 +1,44 @@
+name: Updates README
+run-name: Updating the README.md Updates sector
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  update-readme-section:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository content
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Get the last commit message
+      id: get_commit_message
+      run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
+
+    - name: Update README.md
+      run: |
+        COMMIT_MESSAGE="${{ steps.get_commit_message.outputs.message }}"
+        sed -i '/^# Updates/a - '"$COMMIT_MESSAGE"'' README.md
+
+    - name: Configure Git
+      run: |
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+    - name: Commit changes
+      run: |
+        git add README.md
+        git commit -m "Update README with commit message"
+    
+    - name: Push changes
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+

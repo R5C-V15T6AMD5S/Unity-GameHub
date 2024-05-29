@@ -1,9 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
 {
     // TerrainGenerator upravlja stvaranjem terenskih podataka za chunk
     public BiomeGenerator biomeGenerator;
+
+    [SerializeField]
+    List<Vector3Int> biomeCenters = new List<Vector3Int>();
     public ChunkData GenerateChunkData(ChunkData data, Vector2Int mapSeedOffset)
     {
         // Linije koda koje se tiču treeData su postavljene prije 2 for petlje iz razloga jer se želi jednom izračunati vrijednosti šuma.
@@ -22,5 +26,26 @@ public class TerrainGenerator : MonoBehaviour
             }
         }
         return data;
+    }
+
+    public void GenerateBiomePoints(Vector3 playerPosition, int drawRange, int mapSize, Vector2Int mapSeedOffset)
+    {
+
+        // Resetiraju se pozicije
+        biomeCenters = new List<Vector3Int>();
+
+        biomeCenters = BiomeCenterFinder.CalculateBiomeCenters(playerPosition, drawRange, mapSize);
+    }
+
+    private void OnDrawGizmos()
+    {
+        // funkcija kojom se vizualiziraju središnje pozicije bioma
+
+        Gizmos.color = Color.blue;
+
+        foreach (var biomCenterPoint in biomeCenters)
+        {
+            Gizmos.DrawLine(biomCenterPoint, biomCenterPoint + Vector3.up * 255);
+        }
     }
 }

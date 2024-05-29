@@ -3,7 +3,7 @@ run-name: Updating the README.md Updates sector
 on:
   push:
     branches:
-      - master
+      - Sketch-n-Guess
 
 jobs:
   update-readme-section:

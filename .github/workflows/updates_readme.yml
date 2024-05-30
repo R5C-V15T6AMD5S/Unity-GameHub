@@ -14,11 +14,16 @@ jobs:
     steps:
     - name: Checkout repository content
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Fetch all history for all branches and tags
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '14'
+
+    - name: Wait for latest commit to process
+      run: sleep 600  # Delay in SECONDS
 
     - name: Get the last commit message
       id: get_commit_message

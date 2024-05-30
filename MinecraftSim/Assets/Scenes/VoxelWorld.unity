@@ -794,6 +794,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1881268848}
   - {fileID: 212579767}
   - {fileID: 1557358012}
   - {fileID: 1715802963}
@@ -846,7 +847,7 @@ MonoBehaviour:
   biomeNoiseSettings: {fileID: 11400000, guid: e194d61730ea6d849a497fd934840984, type: 2}
   domainWarping: {fileID: 376976129}
   useDomainWarping: 1
-  startLayerHandler: {fileID: 212579768}
+  startLayerHandler: {fileID: 1881268847}
   additionalLayerHandlers: []
   treeGenerator: {fileID: 376976128}
 --- !u!1 &383376300
@@ -1207,7 +1208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Next: {fileID: 131722245}
-  waterLevel: 3
+  waterLevel: 5
 --- !u!4 &537980145
 Transform:
   m_ObjectHideFlags: 0
@@ -2208,6 +2209,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88d331728273814c9f14884a57cc36c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1881268846
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1881268848}
+  - component: {fileID: 1881268847}
+  m_Layer: 0
+  m_Name: WaterLayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1881268847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881268846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 731993e3cb13e0f4caa2ef263c2715ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Next: {fileID: 212579768}
+  waterLevel: 5
+--- !u!4 &1881268848
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881268846}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 376976127}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1947160309 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 340399308381494582, guid: 511d644c7c5c53d4e82b1ad652553858,

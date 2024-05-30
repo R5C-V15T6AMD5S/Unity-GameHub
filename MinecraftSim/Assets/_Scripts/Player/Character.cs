@@ -50,6 +50,7 @@ public class Character : MonoBehaviour
     private void Start()
     {
         playerInput.OnMouseClick += HandleMouseClick;
+        playerInput.OnMouseClickBuild += HandleMouseClickBuild;
         playerInput.OnFly += HandleFlyClick;
     }
     // Metoda koja se izvodi kada se pritisne tipka V
@@ -113,12 +114,24 @@ public class Character : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(playerRay, out hit, interactionRayLength, groundMask))
         {
-            ModifyTerrain(hit);
+            ModifyTerrain(hit, BlockType.Air, false);
         }
     }
 
-    private void ModifyTerrain(RaycastHit hit)
+    private void HandleMouseClickBuild()
     {
-        world.SetBlock(hit, BlockType.Air);
+        if (inventoryController != null && inventoryController.inventoryUI.activeSelf) return;
+
+        Ray playerRay = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(playerRay, out hit, interactionRayLength, groundMask))
+        {
+            ModifyTerrain(hit, BlockType.Stone, true);
+        }
+    }
+
+    private void ModifyTerrain(RaycastHit hit, BlockType blockType, bool isBuilding)
+    {
+        world.SetBlock(hit, blockType, isBuilding);
     }
 }

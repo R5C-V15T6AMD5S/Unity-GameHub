@@ -276,13 +276,22 @@ public class World : MonoBehaviour
         await GenerateWorld(Vector3Int.RoundToInt(player.transform.position));
         OnNewChunksGenerated?.Invoke();
     }
-    internal bool SetBlock(RaycastHit hit, BlockType blockType)
+    internal bool SetBlock(RaycastHit hit, BlockType blockType, bool isBuilding)
     {
         ChunkRenderer chunk = hit.collider.GetComponent<ChunkRenderer>();
         if (chunk == null)
             return false;
+        Vector3Int pos;
 
-        Vector3Int pos = GetBlockPos(hit);
+        if (isBuilding)
+        {
+            pos = GetAdjacentBlockPos(hit);
+        }
+        else
+        {
+            pos = GetBlockPos(hit);
+        }
+        
 
         WorldDataHelper.SetBlock(chunk.ChunkData.worldReference, pos, blockType);
         chunk.modifiedByThePlayer = true;
@@ -301,6 +310,15 @@ public class World : MonoBehaviour
 
         chunk.UpdateChunk();
         return true;
+    }
+
+    private Vector3Int GetAdjacentBlockPos(RaycastHit hit)
+    {
+        Vector3 hitPos = hit.point;
+        Vector3 normal = hit.normal;
+        Vector3 adjacentBlockPos = hitPos + normal * 0.5f;
+
+        return Vector3Int.RoundToInt(adjacentBlockPos);
     }
 
     private Vector3Int GetBlockPos(RaycastHit hit)

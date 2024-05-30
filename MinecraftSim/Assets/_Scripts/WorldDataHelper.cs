@@ -167,9 +167,11 @@ public static class WorldDataHelper
         // U ovoj metodi pokušava se postaviti tip bloka na blok sa poznatom pozicijom u svijetu
 
         ChunkData chunkData = GetChunkData(worldReference, worldBlockPosition);
+        
         if (chunkData != null)
         {
             Vector3Int localPosition = Chunk.GetBlockInChunkCoordinates(chunkData, worldBlockPosition);
+            Debug.Log("POSITION: " + localPosition);
             Chunk.SetBlock(chunkData, localPosition, blockType);
         }
     }

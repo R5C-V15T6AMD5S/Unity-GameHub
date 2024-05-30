@@ -13,7 +13,7 @@ Prije samog kodiranja, potrebno je bilo isplanirati i podijeli se u podgrupe za 
 
 # Updates
 - [2024-05-30 12:17:16] R5C-V15T6AMD5S: Update updates_readme.yml
-> > [2024-05-30 12:13:40] R5C-V15T6AMD5S: Update updates_readme.yml
+- [2024-05-30 12:13:40] R5C-V15T6AMD5S: Update updates_readme.yml
 
 
 # Detalji

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ButtonControls : MonoBehaviour {
     public Player playerData;
@@ -12,6 +13,9 @@ public class ButtonControls : MonoBehaviour {
     private bool[] levelCompleted = new bool[4];
 
     public void LevelCompleted(int buttonIndex) {
+
+        SceneManager.LoadScene("Singleplayer");
+
         if (!levelCompleted[buttonIndex]) {
             playerData.numberOfCompletedLevels++;
             levelCompleted[buttonIndex] = true;

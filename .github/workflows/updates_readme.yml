@@ -9,7 +9,7 @@ jobs:
   update-readme-section:
     runs-on: ubuntu-latest
     env:
-      BRANCH_NAME: Sketch-n-Guess
+      BRANCH_NAME: master
 
     steps:
     - name: Checkout repository content

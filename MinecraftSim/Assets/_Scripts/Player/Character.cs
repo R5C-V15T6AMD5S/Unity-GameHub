@@ -30,6 +30,8 @@ public class Character : MonoBehaviour
     // Definiranje varijable koja oznaèava je li igraè u procesu èekanja
     bool isWaiting = false;
 
+    public World world;
+
     // Metoda koja se prva poziva kada se objekt uèita u memoriju,
     // provjerava je li postavljena glavna kamera i dohvaæa i povezuje komponente
     // za upravljanje i kretanje igraèa
@@ -38,6 +40,7 @@ public class Character : MonoBehaviour
         if (mainCamera == null) mainCamera = Camera.main;
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
+        world = FindObjectOfType<World>();
     }
 
     // Metoda koja se poziva jedanput, pretplaæuje
@@ -101,6 +104,16 @@ public class Character : MonoBehaviour
     // Metoda koja æe služit za kopanje blokova
     private void HandleMouseClick()
     {
-        
+        Ray playerRay = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(playerRay, out hit, interactionRayLength, groundMask))
+        {
+            ModifyTerrain(hit);
+        }
+    }
+
+    private void ModifyTerrain(RaycastHit hit)
+    {
+        world.SetBlock(hit, BlockType.Air);
     }
 }

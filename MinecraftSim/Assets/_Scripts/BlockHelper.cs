@@ -29,19 +29,35 @@ public static class BlockHelper
             var neighbourBlockCoordinates = new Vector3Int(x, y, z) + direction.GetVector();
             var neighbourBlockType = Chunk.GetBlockFromChunkCoordinates(chunk, neighbourBlockCoordinates);
 
-            if(neighbourBlockType != BlockType.Nothing && BlockDataManager.blockTextureDataDictionary[neighbourBlockType].isSolid == false)
+            if(ShouldRenderFace(neighbourBlockType, blockType))
             {
-                if (blockType == BlockType.Water)
-                {
-                    // Pojedina strana vode se treba renderirati ukoliko 'dira' zrak
-                    if (neighbourBlockType == BlockType.Air)
-                    meshData.waterMesh = GetFaceDataIn(direction, chunk, x, y, z, meshData.waterMesh, blockType);
-                }
-                else
-                {
-                    meshData = GetFaceDataIn(direction, chunk, x, y, z, meshData, blockType);
-                }
+                meshData = GetFaceData(neighbourBlockType, direction, chunk, x, y, z, meshData, blockType);
             }
+        }
+        return meshData;
+    }
+
+    private static bool ShouldRenderFace(BlockType neighbourBlockType, BlockType blockType)
+    {
+        // ShouldRenderFace je metoda koja prima određenu stranu te provjerava treba li se ispuniti mesh podacima
+
+        return neighbourBlockType != BlockType.Nothing && 
+            !BlockDataManager.blockTextureDataDictionary[neighbourBlockType].isSolid;
+    }
+
+    private static MeshData GetFaceData(BlockType neighbourBlockType, Direction direction, ChunkData chunk, int x, int y, int z, MeshData meshData, BlockType blockType)
+    {
+        // GetFaceData metoda poziva metode koje ispunjuju meshData sa podacima ovisno o tome koji je trenutni tip bloka (npr. iznimka je voda, puni se waterMesh)
+        
+        if (blockType == BlockType.Water)
+        {
+            // Pojedina strana vode se treba renderirati ukoliko 'dira' zrak
+            if (neighbourBlockType == BlockType.Air)
+            meshData.waterMesh = GetFaceDataIn(direction, chunk, x, y, z, meshData.waterMesh, blockType);
+        }
+        else
+        {
+            meshData = GetFaceDataIn(direction, chunk, x, y, z, meshData, blockType);
         }
         return meshData;
     }

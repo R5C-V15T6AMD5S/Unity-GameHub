@@ -31,6 +31,7 @@ public class Character : MonoBehaviour
     bool isWaiting = false;
 
     public World world;
+    public InventoryController inventoryController;
 
     // Metoda koja se prva poziva kada se objekt uèita u memoriju,
     // provjerava je li postavljena glavna kamera i dohvaæa i povezuje komponente
@@ -41,6 +42,7 @@ public class Character : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         world = FindObjectOfType<World>();
+        inventoryController = FindObjectOfType<InventoryController>();
     }
 
     // Metoda koja se poziva jedanput, pretplaæuje
@@ -55,6 +57,7 @@ public class Character : MonoBehaviour
     // ovisno o prijašnjem stanju
     private void HandleFlyClick()
     {
+        if (inventoryController != null && inventoryController.inventoryUI.activeSelf) return;
         fly = !fly;
     }
 
@@ -104,6 +107,8 @@ public class Character : MonoBehaviour
     // Metoda koja æe služit za kopanje blokova
     private void HandleMouseClick()
     {
+        if (inventoryController != null && inventoryController.inventoryUI.activeSelf) return;
+
         Ray playerRay = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
         RaycastHit hit;
         if (Physics.Raycast(playerRay, out hit, interactionRayLength, groundMask))

@@ -31,8 +31,8 @@ jobs:
         COMMIT_USER="${{ github.actor }}"
         COMMIT_MESSAGE="${{ steps.get_commit_message.outputs.message }}"
         COMMIT_DATE=$(date +"%Y-%m-%d %H:%M:%S")
-        FORMATTED_MESSAGE="> [${COMMIT_DATE}] ${COMMIT_USER}: ${COMMIT_MESSAGE}"
-        sed -i '/^# Updates/a > '"$FORMATTED_MESSAGE"'' README.md
+        FORMATTED_MESSAGE="[${COMMIT_DATE}] ${COMMIT_USER}: ${COMMIT_MESSAGE}"
+        sed -i '/^# Updates/a - '"$FORMATTED_MESSAGE"'' README.md
 
     - name: Configure Git
       run: |

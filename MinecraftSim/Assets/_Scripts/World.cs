@@ -59,6 +59,9 @@ public class World : MonoBehaviour
 
     private async Task GenerateWorld(Vector3Int position)
     {
+
+        terrainGenerator.GenerateBiomePoints(position, chunkDrawingRange, chunkSize, mapSeedOffset);
+
         // Dohvaćaju se potrebni chunkovi i podaci chunkova, prosljeđuje se i Token članska varijabla taskTokenSource-a kako bi se mogao zaustaviti Task
         WorldGenerationData worldGenerationData = await Task.Run(() => GetPositionsThatPlayerSees(position), taskTokenSource.Token);
 
@@ -208,8 +211,11 @@ public class World : MonoBehaviour
     {
         // U ovoj metodi se poziva worldRenderer.RenderChunk koji renderira pojedini MeshData. U rječnik se dodaje chunkRenderer koji je vraćen iz spomenute metode na odgovarajuću poziciju
 
-        ChunkRenderer chunkRenderer = worldRenderer.RenderChunk(worldData, position, meshData);
-        worldData.chunkDictionary.Add(position, chunkRenderer);
+        if (!worldData.chunkDictionary.ContainsKey(position))
+        {
+            ChunkRenderer chunkRenderer = worldRenderer.RenderChunk(worldData, position, meshData);
+            worldData.chunkDictionary.Add(position, chunkRenderer);
+        }
     }
 
     private WorldGenerationData GetPositionsThatPlayerSees(Vector3Int playerPosition)

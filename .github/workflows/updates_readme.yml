@@ -1,0 +1,51 @@
+name: Updates README
+run-name: Updating the README.md Updates section
+on:
+  push:
+    branches:
+      - ${{ env.BRANCH_NAME }}
+
+jobs:
+  update-readme-section:
+    runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: Sketch-n-Guess
+
+    steps:
+    - name: Checkout repository content
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ env.BRANCH_NAME }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Get the last commit message
+      id: get_commit_message
+      run: echo "::set-output name=message::$(git log -1 --pretty=%B)"
+
+    - name: Update README.md
+      run: |
+        COMMIT_USER="${{ github.actor }}"
+        COMMIT_MESSAGE="${{ steps.get_commit_message.outputs.message }}"
+        COMMIT_DATE=$(date +"%Y-%m-%d %H:%M:%S")
+        FORMATTED_MESSAGE="> [${COMMIT_DATE}] ${COMMIT_USER}: ${COMMIT_MESSAGE}"
+        sed -i '/^# Updates/a > '"$FORMATTED_MESSAGE"'' README.md
+
+    - name: Configure Git
+      run: |
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+    - name: Commit changes
+      run: |
+        git add README.md
+        git commit -m "Update README with commit message"
+    
+    - name: Push changes
+      run: |
+          git push origin ${{ env.BRANCH_NAME }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

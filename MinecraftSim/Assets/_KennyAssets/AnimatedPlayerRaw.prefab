@@ -191,6 +191,9 @@ MonoBehaviour:
     m_Bits: 8
   fly: 0
   animator: {fileID: 116692707738079568}
+  world: {fileID: 0}
+  inventoryController: {fileID: 0}
+  inventoryManager: {fileID: 0}
 --- !u!114 &398407603680837260
 MonoBehaviour:
   m_ObjectHideFlags: 0

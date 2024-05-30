@@ -32,6 +32,7 @@ public class Character : MonoBehaviour
 
     public World world;
     public InventoryController inventoryController;
+    public InventoryManager inventoryManager;
 
     // Metoda koja se prva poziva kada se objekt uèita u memoriju,
     // provjerava je li postavljena glavna kamera i dohvaæa i povezuje komponente
@@ -43,6 +44,7 @@ public class Character : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         world = FindObjectOfType<World>();
         inventoryController = FindObjectOfType<InventoryController>();
+        inventoryManager = FindObjectOfType<InventoryManager>();
     }
 
     // Metoda koja se poziva jedanput, pretplaæuje
@@ -126,7 +128,7 @@ public class Character : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(playerRay, out hit, interactionRayLength, groundMask))
         {
-            ModifyTerrain(hit, BlockType.Stone, true);
+            ModifyTerrain(hit, inventoryManager.GetSelectedItemType(), true);
         }
     }
 

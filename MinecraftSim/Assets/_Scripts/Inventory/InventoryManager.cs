@@ -13,10 +13,12 @@ public class InventoryManager : MonoBehaviour
     public GameObject inventoryItemPrefab;
 
     int selectedSlot = -1; // Trenutno odabrani utor
+    public Item[] itemsToPickup;
 
     // Postavlja poèetno odabrani utor na prvi utor
     private void Start()
     {
+        setInventoryItems();
         changeSelectedSlot(0);
     }
 
@@ -34,6 +36,13 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void setInventoryItems()
+    {
+        foreach(var item in itemsToPickup)
+        {
+            AddItem(item);
+        }
+    }
     // Metoda za promjenu odabranog utora.
     void changeSelectedSlot(int newValue)
     {
@@ -43,6 +52,8 @@ public class InventoryManager : MonoBehaviour
         }
         inventorySlots[newValue].Select();
         selectedSlot = newValue;
+        InventoryItem itemInSlot = inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>();
+        Debug.Log(itemInSlot.item);
     }
     // Metoda za dodavanje stavki u inventory
     public bool AddItem(Item item)
@@ -109,5 +120,22 @@ public class InventoryManager : MonoBehaviour
         
         return null;
     
+    }
+
+    public BlockType GetSelectedItemType()
+    {
+        InventorySlot slot = inventorySlots[selectedSlot];
+        InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+        // Provjera postoji li stavka u odabranom utoru. Dohvaæa stavku iz utora. Smanjuje broj stavki za jedan ako se stavka koristi
+        // Provjera je li broj stavki u utoru pao na nulu.
+        // Uništava stavku ako je broj stavki pao na nulu
+        if (itemInSlot != null)
+        {
+            Item item = itemInSlot.item;
+            return item.type;
+        }
+
+        return BlockType.Nothing;
+
     }
 }

@@ -10,7 +10,7 @@ public class Item: ScriptableObject
     // Definiranje vrste i osnovnih postavki predmeta
     [Header("Only gameplay")]
     public TileBase tile;
-    public ItemType type;
+    public BlockType type;
     public ActionType actionType;
     public Vector2Int range = new Vector2Int(5, 4);
     
@@ -23,16 +23,12 @@ public class Item: ScriptableObject
     public Sprite image;
 }
 
-// Enumeracija tipa predmeta
-public enum ItemType
-{
-    BuildingBlock,
-    Tool
-}
+
 
 // Enumeracija akcije predmeta
 public enum ActionType
 {
+    Nothing,
     Dig,
     Mine
 }

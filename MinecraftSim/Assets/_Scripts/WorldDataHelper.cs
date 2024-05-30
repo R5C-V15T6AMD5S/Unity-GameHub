@@ -171,7 +171,6 @@ public static class WorldDataHelper
         if (chunkData != null)
         {
             Vector3Int localPosition = Chunk.GetBlockInChunkCoordinates(chunkData, worldBlockPosition);
-            Debug.Log("POSITION: " + localPosition);
             Chunk.SetBlock(chunkData, localPosition, blockType);
         }
     }

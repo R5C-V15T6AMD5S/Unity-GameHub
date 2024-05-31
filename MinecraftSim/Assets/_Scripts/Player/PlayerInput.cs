@@ -7,7 +7,7 @@ using UnityEngine;
 // kretanja igraèa ovisno o pritisnutoj tipki
 public class PlayerInput : MonoBehaviour
 {
-    public event Action OnMouseClick, OnFly; // Definiranje dogaðaja
+    public event Action OnMouseClick, OnMouseClickBuild, OnFly; // Definiranje dogaðaja
     public bool RunningPressed { get; private set; } // Varijabla koja prati ako je pritisnuta tipka za trèanje
 
     public Vector3 MovementInput { get; private set; } // Varijabla koja prati kretanje igraèa
@@ -71,6 +71,11 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             OnMouseClick?.Invoke();
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            OnMouseClickBuild?.Invoke();
         }
     }
 }

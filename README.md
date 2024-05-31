@@ -12,6 +12,7 @@ Prije samog kodiranja, potrebno je bilo isplanirati i podijeli se u podgrupe za 
 
 
 # Updates
+- [2024-05-31 11:48:04] Deno234: Merge pull request #124 from R5C-V15T6AMD5S/GH_Action-v3
 - [2024-05-30 12:37:42] R5C-V15T6AMD5S: Smanjen delay
 - [2024-05-30 12:29:57] R5C-V15T6AMD5S: Izbrisana nepotrebna stavka
 - [2024-05-30 12:25:41] R5C-V15T6AMD5S: Popravak gramatičkih grešaka 

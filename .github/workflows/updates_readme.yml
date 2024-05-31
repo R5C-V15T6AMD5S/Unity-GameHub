@@ -5,9 +5,13 @@ on:
     branches:
       - master
 
-  commit:
+  pull_request:
     branches:
       - master
+    types:
+      - opened
+      - closed
+      - synchronize
 
 jobs:
   update-readme-section:
@@ -27,7 +31,7 @@ jobs:
         node-version: '14'
 
     - name: Wait for latest commit to process
-      run: sleep 90  # Delay in SECONDS
+      run: sleep 60  # Delay in SECONDS
 
     - name: Get the last commit message
       id: get_commit_message

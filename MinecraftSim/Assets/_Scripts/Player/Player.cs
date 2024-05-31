@@ -1,38 +1,76 @@
 using System;
 using UnityEngine;
 
-// Klasa koja služi za zdravlje igraèa
 public class Player : MonoBehaviour
 {
-    // Definiranje maksimalnog zdravlja i trenutnog zdravlja
     public int MaxHealth = 100;
     private int currentHealth;
 
-    // Dogaðaj koji se poziva kada se promijeni zdravlje igraèa.
     public static event Action<int> OnHealthChanged;
 
-    // Metoda koja se poziva pri pokretanju igraèa.
-    // Postavljanje treutnog zdravlja
+    private bool isFalling = false;
+    private float startFallHeight;
+    private float fallThreshold = 10.0f; // Minimalna visina pada koja uzrokuje štetu
+    private float damageMultiplier = 2.0f; // Koliko štete po metru pada
+    private float previousYPosition;
+
     private void Start()
     {
         currentHealth = MaxHealth;
+        previousYPosition = transform.position.y;
     }
 
-    // Metoda koja se poziva pri svakom frame-u provjerava ako je
-    // pritisnut space ukoliko je smanjuje se zdravlje igraèa
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        // Praæenje pada
+        if (transform.position.y < previousYPosition)
         {
-            TakeDamage(20);
+            if (!isFalling)
+            {
+                isFalling = true;
+                startFallHeight = previousYPosition;
+            }
+        }
+        else
+        {
+            if (isFalling)
+            {
+                isFalling = false;
+                float fallDistance = startFallHeight - transform.position.y;
+                if (fallDistance > fallThreshold)
+                {
+                    int fallDamage = Mathf.FloorToInt((fallDistance - fallThreshold) * damageMultiplier);
+                    TakeDamage(fallDamage);
+                }
+            }
+        }
+
+        // Ažuriranje prethodne Y pozicije
+        previousYPosition = transform.position.y;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            if (isFalling)
+            {
+                isFalling = false;
+                float fallDistance = startFallHeight - transform.position.y;
+                if (fallDistance > fallThreshold)
+                {
+                    int fallDamage = Mathf.FloorToInt((fallDistance - fallThreshold) * damageMultiplier);
+                    TakeDamage(fallDamage);
+                }
+            }
         }
     }
 
-    // Metoda za primanje štete igraèa u kojoj se poziva
-    // dogaðaj za promjenu zdravlja na health baru
     private void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, MaxHealth);
         OnHealthChanged?.Invoke(currentHealth);
+        Debug.Log("Current Health: " + currentHealth);
     }
 }

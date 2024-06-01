@@ -1,20 +1,27 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
     [SerializeField] private Text timeCounter;
-
+    
+    [SerializeField] private Text hpCount;
+    
+    [SerializeField] private Text lvlCount;
+    
+    [SerializeField] private Text killCount;
+    
     private const string TimeText = "Time: ";
 
     private const string HealthText = "HP: ";
 
     private const string LvlText = "LV: ";
-
-    [SerializeField] private Text hpCount;
     
-    [SerializeField] private Text lvlCount;
+    private const string KillText = "Kills: ";
+
+    private int _killCount;
     
     private float _timeInLevel;
 
@@ -25,6 +32,7 @@ public class HUDManager : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player");
         hpCount.text = HealthText + _player.GetComponent<Health>().hp;
         lvlCount.text = LvlText + _player.GetComponent<PlayerLeveling>().lvl;
+        killCount.text = KillText + _killCount;
     }
 
     private void Update()   //tracks time
@@ -42,5 +50,11 @@ public class HUDManager : MonoBehaviour
     {
         Debug.Log("Leveled up!");
         lvlCount.text = LvlText + _player.GetComponent<PlayerLeveling>().lvl;
+    }
+
+    public void ChangeKillCount()
+    {
+        _killCount++;
+        killCount.text = KillText + _killCount;
     }
 }

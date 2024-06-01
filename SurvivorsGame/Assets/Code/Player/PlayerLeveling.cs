@@ -12,6 +12,9 @@ public class PlayerLeveling : MonoBehaviour
     
     private GameObject _hud;
     
+    [SerializeField]
+    public GameObject lvlUpMenuUI;
+    
     private void Start()
     {
         _hud = GameObject.FindGameObjectWithTag("HUD");
@@ -28,6 +31,8 @@ public class PlayerLeveling : MonoBehaviour
         _levelUpThreshold *= 2;
         lvl += 1;
         _hud.GetComponent<HUDManager>().LevelUp();
+        lvlUpMenuUI.SetActive(true);
+        Time.timeScale = 0f;
         Debug.Log("LVL UP, you are now lvl "+ lvl +" , pick an UPGRADE");
     }
 }

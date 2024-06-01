@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1788164076010732792}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.6411, y: -1.27, z: 0}
-  m_LocalScale: {x: 0.8779, y: 1, z: 1}
+  m_LocalScale: {x: 0.85080653, y: 1.2760526, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -76,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -119,18 +119,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.005292475, y: -0.0023230314}
+  m_Offset: {x: 0.06279087, y: 0.109712094}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 2}
-    newSize: {x: 1, y: 2}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1106917, y: 2.1018198}
+  m_Size: {x: 2.3305511, y: 1.7320781}
   m_EdgeRadius: 0
 --- !u!114 &2192037524774015573
 MonoBehaviour:
@@ -144,8 +144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcee251055e8a44a8d4427d42abe9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dmg: 5
-  movementSpeed: 1.5
   data: {fileID: 11400000, guid: f929f293babe30e4a806e30a09068a9c, type: 2}
 --- !u!114 &1788164076010732792
 MonoBehaviour:
@@ -159,5 +157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad87aa2b3990c0f4e81acda6d41c0cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 10
+  hp: 5
   exp: {fileID: 6286148072242796551, guid: be24e61102643bc48abf8527c0dd78c3, type: 3}
+  maxHealth: 5

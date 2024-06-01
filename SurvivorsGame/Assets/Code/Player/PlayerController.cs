@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] 
+    private float movementSpeed = 5f;
     private Rigidbody2D _rb;
     private Vector2 _movement;
     private GameObject _attackArea;
@@ -28,6 +29,11 @@ public class PlayerController : MonoBehaviour
         if (velocity == Vector2.zero) return;
         var angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
         _attackArea.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
+    
+    public void IncreaseMovementSpeed(float speed)   //change movement speed
+    {
+        movementSpeed += speed;
     }
 
     private void MoveCharacter(Vector2 direction)   //velocity function

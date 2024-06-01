@@ -2,17 +2,29 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] public int hp;
+    [SerializeField] 
+    public int hp;
     
-    [SerializeField] private GameObject exp;
+    [SerializeField] 
+    private GameObject exp;
 
-    private int _maxHealth = 100;
+    public int maxHealth = 100;
     
-
-    public void SetHealth(int maxHealth, int health)    //instantiate values
+    private GameObject _hud;
+    
+    private void Start()
     {
-        _maxHealth = maxHealth;
+        _hud = GameObject.FindGameObjectWithTag("HUD");
+    }
+
+    public void SetHealth(int maxHp, int health)    //instantiate values
+    {
+        maxHealth = maxHp;
         hp = health;
+        if (gameObject.CompareTag("Player"))
+        {
+            _hud.GetComponent<HUDManager>().ChangeHealthCount();
+        }
     }
     public void Damage(int amount)  //method responsible for damage
     {
@@ -21,6 +33,10 @@ public class Health : MonoBehaviour
             throw new System.ArgumentOutOfRangeException("Can't have negative damage!");
         }
         hp -= amount;
+        if (gameObject.CompareTag("Player"))
+        {
+            _hud.GetComponent<HUDManager>().ChangeHealthCount();
+        }
         if (hp > 0) return;
         Die();
     }
@@ -32,22 +48,30 @@ public class Health : MonoBehaviour
             throw new System.ArgumentOutOfRangeException("Heal can't be negative!");
         }
 
-        if (hp + amount > _maxHealth)
+        if (hp + amount > maxHealth)
         {
-            hp = _maxHealth;
+            hp = maxHealth;
         }
         else
         {
             hp += amount;
+        }
+        if (gameObject.CompareTag("Player"))
+        {
+            _hud.GetComponent<HUDManager>().ChangeHealthCount();
         }
     }
 
     private void Die()  //method responsible for death and exp generation
     {
         Debug.Log("Died!");
+        if (gameObject.CompareTag("Player"))
+        {
+            _hud.GetComponent<HUDManager>().ChangeKillCount();
+        }
         if (exp != null)
         {
-            var newExp = Instantiate(exp, transform.position, Quaternion.identity);
+            Instantiate(exp, transform.position, Quaternion.identity);
         }
         Destroy(gameObject);
     }

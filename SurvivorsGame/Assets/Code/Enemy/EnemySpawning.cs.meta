@@ -4,7 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - enemyPrefab: {fileID: 9025820371150427797, guid: 2725d260df0233543bfcf2c7135a35b0, type: 3}
+  - enemyPrefab: {fileID: 2192037524774015573, guid: 2725d260df0233543bfcf2c7135a35b0, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

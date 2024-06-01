@@ -2,11 +2,15 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private int dmg = 5;
+    private int dmg;
     
-    [SerializeField] private float movementSpeed = 1.5f;
+    private float movementSpeed;
     
     [SerializeField] private EnemyData data;
+    
+    private float damageTimer = 0f;
+    
+    private const float TimeToDamage = 0.2f; // Set this to the desired damage interval
     
 
     private GameObject _player;
@@ -19,6 +23,7 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         Swarm();
+        damageTimer += Time.deltaTime;
     }
 
     private void SetEnemyValues()   //Instantiate enemy values
@@ -33,10 +38,15 @@ public class Enemy : MonoBehaviour
         transform.position = Vector2.MoveTowards(transform.position, _player.transform.position, movementSpeed * Time.deltaTime);
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)  //when collision boxes collide damage is dealt
+    private void OnTriggerStay2D(Collider2D col)  //when collision boxes collide damage is dealt
     {
-        if (!collider.CompareTag("Player")) return;
-        if (collider.GetComponent<Health>() == null) return;
-        collider.GetComponent<Health>().Damage(dmg);
+        if (col.GetComponent<Health>() == null) 
+        {
+            return;
+        }
+        if (!(damageTimer >= TimeToDamage)) return;
+        col.GetComponent<Health>().Damage(dmg);
+        Debug.Log("Enemy dealt dmg");
+        damageTimer = 0f;
     }
 }

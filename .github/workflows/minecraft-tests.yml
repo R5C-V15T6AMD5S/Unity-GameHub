@@ -13,29 +13,27 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v2
+    - name: Set up Unity
+      uses: game-ci/unity-setup@v2
       with:
-        dotnet-version: '8.0.x'
-
-    - name: Install dependencies
-      run: |
-        dotnet restore MinecraftSim/MinecraftSim.sln
+        unityVersion: '2022.3.22f1' 
 
     - name: Run Edit Mode Tests
       run: |
-        dotnet test MinecraftSim/EditTests.csproj --logger "trx;LogFileName=edit_test_results.trx" --results-directory ./TestResults
-
-    #- name: Run Play Mode Tests
-     # run: |
-      #  dotnet test MinecraftSim/Assets/PlayTests/PlayTests --logger "trx;LogFileName=play_test_results.trx"
+        /opt/unity/Editor/Unity \
+        -batchmode \
+        -runTests \
+        -projectPath $(pwd) \
+        -testResults TestResults/edit_test_results.xml \
+        -testPlatform EditMode \
+        -logFile -
 
     - name: Archive test results
       if: always()
       uses: actions/upload-artifact@v2
       with:
         name: test-results
-        path: ./TestResults/*.trx
+        path: TestResults/*.xml
 
     - name: Create Issue if Tests Fail
       if: failure()

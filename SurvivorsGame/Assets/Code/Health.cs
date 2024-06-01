@@ -11,6 +11,9 @@ public class Health : MonoBehaviour
 
     public int maxHealth = 100;
     
+    public GameObject rewardBoxPrefab; // Assign your RewardBox prefab in the Inspector
+    public float spawnChance = 0.2f; // 20% spawn chance
+    
     private GameObject _hud;
     
     private void Start()
@@ -77,6 +80,14 @@ public class Health : MonoBehaviour
         if (exp != null)
         {
             Instantiate(exp, transform.position, Quaternion.identity);
+            // Generate a random number between 0 and 1
+            var randomNumber = Random.value;
+
+            // If the random number is less than or equal to the spawn chance, spawn the reward box
+            if (randomNumber <= spawnChance)
+            {
+                Instantiate(rewardBoxPrefab, transform.position, Quaternion.identity);
+            }
         }
         Destroy(gameObject);
     }

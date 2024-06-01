@@ -8,6 +8,8 @@ TagManager:
   - EXP
   - HUD
   - HP
+  - Enemy
+  - LvlUpMenu
   layers:
   - Default
   - TransparentFX

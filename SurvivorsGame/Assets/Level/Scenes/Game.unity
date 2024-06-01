@@ -1850,6 +1850,8 @@ MonoBehaviour:
   hp: 100
   exp: {fileID: 0}
   maxHealth: 100
+  rewardBoxPrefab: {fileID: 0}
+  spawnChance: 0.2
 --- !u!114 &932803207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3165,10 +3167,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPickupPrefab: {fileID: 119030782010461269, guid: c63986fe2bfb46a498131ca979931ee8, type: 3}
   numberOfPickups: 50
-  minX: -50
-  maxX: 50
-  minY: -50
-  maxY: 50
+  minX: -150
+  maxX: 150
+  minY: -150
+  maxY: 150
 --- !u!4 &1421220561
 Transform:
   m_ObjectHideFlags: 0
@@ -3622,7 +3624,7 @@ GameObject:
   - component: {fileID: 1788429116}
   m_Layer: 5
   m_Name: LevelUpMenu
-  m_TagString: Untagged
+  m_TagString: LvlUpMenu
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

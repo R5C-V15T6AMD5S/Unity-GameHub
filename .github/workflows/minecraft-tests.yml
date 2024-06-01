@@ -1,0 +1,47 @@
+name: Minecraft Branch Test and Notify
+
+on:
+  push:
+    branches:
+      - Minecraft
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install dependencies
+      run: |
+        dotnet restore
+
+    - name: Run Edit Mode Tests
+      run: |
+        dotnet test MinecraftSim/Assets/EditTests/EditTests --logger "trx;LogFileName=edit_test_results.trx"
+
+    - name: Run Play Mode Tests
+      run: |
+        dotnet test MinecraftSim/Assets/PlayTests/PlayTests --logger "trx;LogFileName=play_test_results.trx"
+
+    - name: Archive test results
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: |
+          **/*.trx
+
+    - name: Create Issue if Tests Fail
+      if: failure()
+      uses: peter-evans/create-issue-from-file@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        title: 'Merge to Minecraft branch failed'
+        content-filepath: .github/failure.md

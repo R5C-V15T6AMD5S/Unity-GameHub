@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
@@ -65,9 +66,13 @@ public class Health : MonoBehaviour
     private void Die()  //method responsible for death and exp generation
     {
         Debug.Log("Died!");
-        if (gameObject.CompareTag("Player"))
+        if (!gameObject.CompareTag("Player"))
         {
             _hud.GetComponent<HUDManager>().ChangeKillCount();
+        }
+        else if (gameObject.CompareTag("Player"))
+        {
+            SceneManager.LoadScene("GameOver");
         }
         if (exp != null)
         {

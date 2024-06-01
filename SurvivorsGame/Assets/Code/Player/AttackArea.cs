@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class AttackArea : MonoBehaviour
 {
-    [SerializeField] private int dmg;
+    private int _dmg = 5;
 
     public void IncreaseDamage(int damage)   //instantiate damage value
     {
-        dmg += damage;
+        _dmg += damage;
     }
 
     private void OnTriggerEnter2D(Collider2D col)  //collision box for player weapon
@@ -15,6 +15,6 @@ public class AttackArea : MonoBehaviour
         if (col.GetComponent<Health>() == null) return;
         var hp = col.GetComponent<Health>();
         Debug.Log("Player dealt dmg");
-        hp.Damage(dmg);
+        hp.Damage(_dmg);
     }
 }

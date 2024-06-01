@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using Code.Player;
 using TMPro;
-using UnityEditor.UI;
 using UnityEngine;
-
 namespace Level.UI
 {
     public class LevelUpMenu : MonoBehaviour

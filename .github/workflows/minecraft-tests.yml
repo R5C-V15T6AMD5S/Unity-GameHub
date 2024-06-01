@@ -14,7 +14,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up Unity
-      uses: unity-ci/docker@0.1
+      uses: game-ci/unity-builder@v2
       with:
         unityVersion: '2022.3.22f1'
 

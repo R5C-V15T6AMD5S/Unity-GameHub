@@ -24,7 +24,7 @@ jobs:
 
     - name: Run Edit Mode Tests
       run: |
-        dotnet test MinecraftSim/EditTests.csproj --logger "trx;LogFileName=edit_test_results.trx"
+        dotnet test MinecraftSim/EditTests.csproj --logger "trx;LogFileName=edit_test_results.trx" --results-directory ./TestResults
 
     #- name: Run Play Mode Tests
      # run: |
@@ -35,8 +35,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: test-results
-        path: |
-          **/*.trx
+        path: ./TestResults/*.trx
 
     - name: Create Issue if Tests Fail
       if: failure()

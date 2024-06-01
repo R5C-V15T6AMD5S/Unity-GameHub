@@ -13,7 +13,8 @@ namespace Code.Player.Upgrades
         }
         public override void ApplyUpgrade()
         {
-            var attackArea = GameObject.FindGameObjectWithTag("Player").GetComponent<AttackArea>();
+            var attackArea = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<AttackArea>();
+            Debug.Log(attackArea);
             attackArea.IncreaseDamage(5);
             upgradeLevel++;
             Debug.Log("Applying upgrade: " + upgradeName + " level " + upgradeLevel);

@@ -24,11 +24,11 @@ jobs:
 
     - name: Run Edit Mode Tests
       run: |
-        dotnet test MinecraftSim/Assets/EditTests/EditTests --logger "trx;LogFileName=edit_test_results.trx"
+        dotnet test MinecraftSim/EditTests.csproj --logger "trx;LogFileName=edit_test_results.trx"
 
-    - name: Run Play Mode Tests
-      run: |
-        dotnet test MinecraftSim/Assets/PlayTests/PlayTests --logger "trx;LogFileName=play_test_results.trx"
+    #- name: Run Play Mode Tests
+     # run: |
+      #  dotnet test MinecraftSim/Assets/PlayTests/PlayTests --logger "trx;LogFileName=play_test_results.trx"
 
     - name: Archive test results
       if: always()

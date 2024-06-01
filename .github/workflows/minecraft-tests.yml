@@ -13,6 +13,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Activate Unity
+      uses: kuler90/activate-unity@v1
+      with:
+        unity-username: ${{ secrets.UNITY_USERNAME }}
+        unity-password: ${{ secrets.UNITY_PASSWORD }}
+        unity-authenticator-key: ${{ secrets.UNITY_AUTHENTICATOR_KEY }}
+
     - name: Set up Unity
       uses: game-ci/unity-builder@v2
       with:

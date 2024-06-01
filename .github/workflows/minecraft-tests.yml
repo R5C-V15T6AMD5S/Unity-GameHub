@@ -6,46 +6,34 @@ on:
       - Minecraft
 
 jobs:
-  run-tests:
+  test:
     runs-on: ubuntu-latest
-
+    name: Run Unity Tests
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Unity
-      uses: game-ci/unity-builder@v2
-      with:
-        unityVersion: '2022.3.22f1'
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: MinecraftSim
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Activate Unity
-      uses: kuler90/activate-unity@v1
-      with:
-        unity-username: ${{ secrets.UNITY_USERNAME }}
-        unity-password: ${{ secrets.UNITY_PASSWORD }}
-        unity-authenticator-key: ${{ secrets.UNITY_AUTHENTICATOR_KEY }}
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: TestResults
 
-    - name: Run Edit Mode Tests
-      run: |
-        /opt/unity/Editor/Unity \
-        -batchmode \
-        -runTests \
-        -projectPath $(pwd) \
-        -testResults TestResults/edit_test_results.xml \
-        -testPlatform EditMode \
-        -logFile -
-
-    - name: Archive test results
-      if: always()
-      uses: actions/upload-artifact@v2
-      with:
-        name: test-results
-        path: TestResults/*.xml
-
-    - name: Create Issue if Tests Fail
-      if: failure()
-      uses: peter-evans/create-issue-from-file@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        title: 'Merge to Minecraft branch failed'
-        content-filepath: .github/failure.md
+      - name: Create Issue if Tests Fail
+        if: failure()
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: 'Merge to Minecraft branch failed'
+          content-filepath: .github/failure.md

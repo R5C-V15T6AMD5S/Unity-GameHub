@@ -20,7 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        dotnet restore
+        dotnet restore MinecraftSim/MinecraftSim.sln
 
     - name: Run Edit Mode Tests
       run: |

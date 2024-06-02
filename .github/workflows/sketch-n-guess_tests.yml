@@ -1,0 +1,40 @@
+name: Sketch-n-Guess Branch Testing & Notifying
+
+on:
+  push:
+    branches:
+      - Sketch-n-Guess
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Run Unity Tests
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: Sketch_n_Guess
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: TestResults
+
+      - name: Create Issue if Tests Fail
+        if: failure()
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: 'Merge to branch Sketch-n-Guess has FAILED'
+          content-filepath: .github/sg_failure.md
+

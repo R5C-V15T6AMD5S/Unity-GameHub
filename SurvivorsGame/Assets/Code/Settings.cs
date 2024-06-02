@@ -22,7 +22,6 @@ namespace Code
             resolutionDropdown.ClearOptions();
             var options = new List<string>();
             var currentResolutionIndex = 0;
-            //var uniqueResolutions = new HashSet<string>();
 
             foreach (var resolution in _resolutions)
             {

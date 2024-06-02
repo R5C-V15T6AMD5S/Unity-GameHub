@@ -1,0 +1,4 @@
+repository "SurvivorsGame@unity_628178F043FF00D49801@cloud"
+  path "/"
+    br "/main"
+    co "/main"

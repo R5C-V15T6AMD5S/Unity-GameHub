@@ -8,7 +8,7 @@ public class Character : MonoBehaviour
 {
     // Definiranje reference na glavnu kameru
     [SerializeField]
-    private Camera mainCamera;
+    public Camera mainCamera;
     // Definiranje reference za upravljanje igraèa
     [SerializeField]
     private PlayerInput playerInput;
@@ -120,7 +120,7 @@ public class Character : MonoBehaviour
         }
     }
 
-    private void HandleMouseClickBuild()
+    public void HandleMouseClickBuild()
     {
         if (inventoryController != null && inventoryController.inventoryUI.activeSelf) return;
 

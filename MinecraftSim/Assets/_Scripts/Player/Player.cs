@@ -4,7 +4,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int MaxHealth = 100;
-    private int currentHealth;
+    public int currentHealth;
 
     public static event Action<int> OnHealthChanged;
 
@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
         previousYPosition = transform.position.y;
     }
 
-    private void Update()
+    public void Update()
     {
         // Praæenje pada
         if (transform.position.y < previousYPosition)
@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
                 if (fallDistance > fallThreshold)
                 {
                     int fallDamage = Mathf.FloorToInt((fallDistance - fallThreshold) * damageMultiplier);
+                    
                     TakeDamage(fallDamage);
                 }
             }
@@ -47,9 +48,10 @@ public class Player : MonoBehaviour
 
         // Ažuriranje prethodne Y pozicije
         previousYPosition = transform.position.y;
+        Debug.Log("NESTO");
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {

@@ -15,7 +15,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     // Metoda koja poziva metodu za odznaèavanje utora
     private void Awake()
     {
-        Deselect();
+        if(image != null)
+        {
+            Deselect();
+        }
     }
     // Metoda za oznaèavanje utora.
     public void Select()

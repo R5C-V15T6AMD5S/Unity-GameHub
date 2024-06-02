@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Red_Plank
   m_EditorClassIdentifier: 
   tile: {fileID: 0}
-  type: 20
+  type: 26
   actionType: 0
   range: {x: 5, y: 4}
   stackable: 0
-  image: {fileID: 21300000, guid: 9114e34909bb8224ba6b9b6d0aee6879, type: 3}
+  image: {fileID: 21300000, guid: eeaf418cfa4d51b44974fa4cc862ee53, type: 3}

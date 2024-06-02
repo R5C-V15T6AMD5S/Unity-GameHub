@@ -12,7 +12,7 @@ public class InventoryManager : MonoBehaviour
     // Prefab stavke inventara
     public GameObject inventoryItemPrefab;
 
-    int selectedSlot = -1; // Trenutno odabrani utor
+    public int selectedSlot = -1; // Trenutno odabrani utor
     public Item[] itemsToPickup;
 
     // Postavlja poèetno odabrani utor na prvi utor
@@ -44,7 +44,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
     // Metoda za promjenu odabranog utora.
-    void changeSelectedSlot(int newValue)
+    public void changeSelectedSlot(int newValue)
     {
         if(selectedSlot >= 0) 
         {

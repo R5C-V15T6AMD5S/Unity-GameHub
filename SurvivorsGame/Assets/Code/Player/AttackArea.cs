@@ -1,20 +1,22 @@
-using System;
 using UnityEngine;
 
-public class AttackArea : MonoBehaviour
+namespace Code.Player
 {
-    private int _dmg = 5;
-
-    public void IncreaseDamage(int damage)   //instantiate damage value
+    public class AttackArea : MonoBehaviour
     {
-        _dmg += damage;
-    }
+        private int _dmg = 5;
 
-    private void OnTriggerEnter2D(Collider2D col)  //collision box for player weapon
-    {
-        if (col.GetComponent<Health>() == null) return;
-        var hp = col.GetComponent<Health>();
-        Debug.Log("Player dealt dmg");
-        hp.Damage(_dmg);
+        public void IncreaseDamage(int damage)   //increase damage of player weapon
+        {
+            _dmg += damage;
+        }
+
+        private void OnTriggerEnter2D(Collider2D col)  //collision box for player weapon
+        {
+            if (col.GetComponent<Health>() == null) return;
+            var hp = col.GetComponent<Health>();
+            Debug.Log("Player dealt dmg");
+            hp.Damage(_dmg);
+        }
     }
 }

@@ -1,20 +1,24 @@
+using Code.Player;
 using UnityEngine;
 
-public class ExperienceData : MonoBehaviour
+namespace Code.Enemy
 {
-    public int amount = 5;
+    public class ExperienceData : MonoBehaviour
+    {
+        public int amount = 5;
     
-    private GameObject player;
+        private GameObject _player;
 
-    private void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
+        private void Start()
+        {
+            _player = GameObject.FindGameObjectWithTag("Player");
+        }
 
-    private void OnTriggerEnter2D(Collider2D collider)  //when player collides with exp exp is added up
-    {
-        if (!collider.CompareTag("Player")) return;
-        player.GetComponent<PlayerLeveling>().ExpPickup(amount);
-        Destroy(gameObject);
+        private void OnTriggerEnter2D(Collider2D col)  //when player collides with exp exp is added up
+        {
+            if (!col.CompareTag("Player")) return;
+            _player.GetComponent<PlayerLeveling>().ExpPickup(amount);
+            Destroy(gameObject);
+        }
     }
 }

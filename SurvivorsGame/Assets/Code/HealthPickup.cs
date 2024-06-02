@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class HealthPickup : MonoBehaviour
+namespace Code
 {
-    private void OnTriggerEnter2D(Collider2D other) 
+    public class HealthPickup : MonoBehaviour
     {
-        if (!other.gameObject.CompareTag("Player")) return;
-        other.gameObject.GetComponent<Health>().Heal(10);
-        Destroy(gameObject); 
+        private void OnTriggerEnter2D(Collider2D col) //used for healing the player
+        {
+            if (!col.gameObject.CompareTag("Player")) return;
+            col.gameObject.GetComponent<Health>().Heal(10);
+            Destroy(gameObject); 
+        }
     }
 }

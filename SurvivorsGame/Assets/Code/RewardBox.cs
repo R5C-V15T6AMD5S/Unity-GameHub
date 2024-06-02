@@ -1,17 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using Code.Player;
 using UnityEngine;
 
-public class RewardBox : MonoBehaviour
+namespace Code
 {
-    public GameObject lvlUpMenuUI;
-    
-    private void OnTriggerEnter2D(Collider2D other) 
+    public class RewardBox : MonoBehaviour
     {
-        lvlUpMenuUI = GameObject.FindGameObjectWithTag("LvlUpMenu");
-        if (!other.gameObject.CompareTag("Player")) return;
-        Destroy(gameObject);
-        lvlUpMenuUI.SetActive(true);
-        Time.timeScale = 0f;
+        [SerializeField]
+        public GameObject lvlUpMenuUI;
+    
+        private void Start()    //grabs the lvlUpMenuUI from the player
+        {
+            lvlUpMenuUI = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLeveling>().lvlUpMenuUI;
+        }
+        private void OnTriggerEnter2D(Collider2D col) //opens the lvlUpMenuUI when the player collides with the reward box
+        {
+            if (!col.gameObject.CompareTag("Player")) return;
+            lvlUpMenuUI.SetActive(true);
+            Destroy(gameObject);
+            Time.timeScale = 0f;
+        }
     }
 }

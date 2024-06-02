@@ -12,7 +12,7 @@ namespace Level.UI
         [SerializeField]
         private UpgradeButton[] options;
         
-        private bool isFirstEnable = true;
+        private bool _isFirstEnable = true;
 
         private void Start()
         {
@@ -37,7 +37,7 @@ namespace Level.UI
                 {
                     textComponent.text = textComponent.name switch
                     {
-                        "Name" => option.Upgrade.name,
+                        "Name" => option.Upgrade.upgradeName,
                         "Lvl" => "Lvl: " + option.Upgrade.upgradeLevel,
                         _ => textComponent.text
                     };
@@ -51,9 +51,9 @@ namespace Level.UI
 
         private void OnEnable()
         {
-            if (isFirstEnable)
+            if (_isFirstEnable)
             {
-                isFirstEnable = false;
+                _isFirstEnable = false;
                 return;
             }
             Debug.Log("Number of options: " + options.Length);
@@ -76,7 +76,7 @@ namespace Level.UI
                 {
                     textComponent.text = textComponent.name switch
                     {
-                        "Name" => option.Upgrade.name,
+                        "Name" => option.Upgrade.upgradeName,
                         "Lvl" => "Lvl: " + option.Upgrade.upgradeLevel,
                         _ => textComponent.text
                     };

@@ -15,7 +15,7 @@ namespace Code.Player.Upgrades
         {
             upgradeLevel++;
             var playerController = FindObjectOfType<PlayerController>();
-            playerController.IncreaseMovementSpeed(0.25f);
+            playerController.IncreaseMovementSpeed(0.1f);
             Debug.Log("Applying upgrade: " + upgradeName + " level " + upgradeLevel);
         }
     }

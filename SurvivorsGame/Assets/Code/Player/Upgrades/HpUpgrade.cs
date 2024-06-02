@@ -14,7 +14,7 @@ namespace Code.Player.Upgrades
         public override void ApplyUpgrade()
         {
             var health = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
-            health.SetHealth(health.maxHealth + 10, health.hp + 10);
+            health.SetHealth(health.maxHealth + 5, health.hp + 5);
             upgradeLevel++;
             Debug.Log("Applying upgrade: " + upgradeName + " level " + upgradeLevel);
         }

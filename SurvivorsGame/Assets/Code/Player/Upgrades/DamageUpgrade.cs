@@ -1,5 +1,4 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Code.Player.Upgrades
 {
@@ -17,7 +16,7 @@ namespace Code.Player.Upgrades
             var child = GameObject.FindGameObjectWithTag("Player").transform.GetChild(0);
             var attackArea = child.GetComponent<AttackArea>();
             Debug.Log(attackArea);
-            attackArea.IncreaseDamage(5);
+            attackArea.IncreaseDamage(1);
             upgradeLevel++;
             Debug.Log("Applying upgrade: " + upgradeName + " level " + upgradeLevel);
         }

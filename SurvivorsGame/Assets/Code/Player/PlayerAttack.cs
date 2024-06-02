@@ -1,46 +1,54 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerAttack : MonoBehaviour
+namespace Code.Player
 {
-    [SerializeField]
-    private GameObject attackArea;
-
-    [SerializeField]
-    private GameObject weapon;
-
-    private const float TimeToAttack = 1f; //set to player attack speed
-    private float attackTimer = 0.5f;   //ovo spojiti sa ovim brojem gore
-
-    private void Start()
+    public class PlayerAttack : MonoBehaviour
     {
-        if (weapon == null)
+        [SerializeField]
+        private GameObject attackArea;
+
+        [SerializeField]
+        private GameObject weapon;
+
+        private float _timeToAttack = 1f; //set to player attack speed
+        private const float AttackTimer = 0.2f; //set to weapon active time
+
+        private void Start()
         {
-            weapon = transform.GetChild(0).gameObject;
+            if (weapon == null)
+            {
+                weapon = transform.GetChild(0).gameObject;
+            }
+            attackArea.SetActive(false);
+            StartCoroutine(AttackRoutine());
         }
-        attackArea.SetActive(false);
-        StartCoroutine(AttackRoutine());
-    }
-
-    private IEnumerator AttackRoutine()
-    {
-        while (true)
+    
+        public void IncreaseAttackSpeed(float attackSpeed) //increase attack speed by a certain amount
         {
-            yield return new WaitForSeconds(TimeToAttack);
-            StartAttack();
-            yield return new WaitForSeconds(attackTimer); // Adjust this delay as needed
-            EndAttack();
+            _timeToAttack -= attackSpeed;
         }
-    }
 
-    private void StartAttack()
-    {
-        attackArea.SetActive(true);
-        // Process damage here
-    }
+        private IEnumerator AttackRoutine()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(_timeToAttack);
+                StartAttack();
+                yield return new WaitForSeconds(AttackTimer);
+                EndAttack();
+            }
+        }
 
-    private void EndAttack()
-    {
-        attackArea.SetActive(false);
+        private void StartAttack()
+        {
+            attackArea.SetActive(true);
+            // Process damage here
+        }
+
+        private void EndAttack()
+        {
+            attackArea.SetActive(false);
+        }
     }
 }

@@ -1,20 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+namespace Level.UI
 {
-    public static bool GameIsPaused = false;
-
-    public GameObject pauseMenuUI;
-    
-    public GameObject lvlUpMenuUI;
-    private void Update()
+    public class PauseMenu : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        private static bool _gameIsPaused;
+
+        public GameObject pauseMenuUI;
+    
+        public GameObject lvlUpMenuUI;
+        private void Update()
         {
-            if (GameIsPaused)
+            if (!Input.GetKeyDown(KeyCode.Escape)) return;
+            if (_gameIsPaused)
             {
                 Resume();
             }
@@ -23,36 +22,36 @@ public class PauseMenu : MonoBehaviour
                 Pause();
             }
         }
-    }
     
-    private void Resume()
-    {
-        GameIsPaused = false;
-        pauseMenuUI.SetActive(false);
-        if (lvlUpMenuUI.activeSelf)
+        private void Resume()
         {
-            return;
-        }
-        Time.timeScale = 1f;
+            _gameIsPaused = false;
+            pauseMenuUI.SetActive(false);
+            if (lvlUpMenuUI.activeSelf)
+            {
+                return;
+            }
+            Time.timeScale = 1f;
         
-    }
+        }
     
-    private void Pause()
-    {
-        pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
-        GameIsPaused = true;
-    }
+        private void Pause()
+        {
+            pauseMenuUI.SetActive(true);
+            Time.timeScale = 0f;
+            _gameIsPaused = true;
+        }
     
-    public void GoToMainMenu()
-    {
-        Resume();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-    }
+        public void GoToMainMenu()
+        {
+            Resume();
+            SceneManager.LoadScene("MainMenu");
+        }
 
-    public void QuitGame()
-    {
-        Debug.Log("QUIT!");
-        Application.Quit();
+        public void QuitGame()
+        {
+            Debug.Log("QUIT!");
+            Application.Quit();
+        }
     }
 }

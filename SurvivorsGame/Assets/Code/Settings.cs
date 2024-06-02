@@ -22,16 +22,12 @@ namespace Code
             resolutionDropdown.ClearOptions();
             var options = new List<string>();
             var currentResolutionIndex = 0;
-            var uniqueResolutions = new HashSet<string>();
+            //var uniqueResolutions = new HashSet<string>();
 
             foreach (var resolution in _resolutions)
             {
                 var resolutionOption = resolution.width + "x" + resolution.height;
-
-                // Only add the resolution to the options if it's not already in the HashSet
-                if (!uniqueResolutions.Add(resolutionOption)) continue;
                 options.Add(resolutionOption);
-
                 if (resolution.width == Screen.currentResolution.width && resolution.height == Screen.currentResolution.height)
                 {
                     currentResolutionIndex = options.Count - 1;

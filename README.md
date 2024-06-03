@@ -33,6 +33,7 @@ Uz svaki novi val neprijatelja, igrač ima priliku ne samo preživjeti, već i n
 
 
 # Updates
+- [2024-06-03 19:53:11] Patrik157: Update README.md added vampire survivors
 - [2024-06-03 19:43:54] R5C-V15T6AMD5S: Merge pull request #170 from R5C-V15T6AMD5S/AI_Algos
 - [2024-06-03 19:30:53] R5C-V15T6AMD5S: Merge pull request #169 from R5C-V15T6AMD5S/AI_Algos
 - [2024-06-03 19:01:03] R5C-V15T6AMD5S: Updated README.md

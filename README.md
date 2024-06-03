@@ -6,6 +6,17 @@ Prije samog kodiranja, potrebno je bilo isplanirati i podijeli se u podgrupe za 
 
 
 ## MinecraftSim
+Ova igra je simulacija popularnog Minecrafta koja sadržava njegove osnovne funkcionalnosti. Više o samom procesu izrade igrice vidljivo je u Wikiju.
+
+### Trenutne značajke
+**Generacija blokova, proceduralno generirani tereni, različite vrste blokova i itema, igrači sa svojim značajkama (zdravlje, glad, inventory), kopanje i dodavanje blokova, performanse od cca 5ms po frame-u**.
+
+### Daljnji plan
+**Mobovi, crafting sustav, vremenski ciklus, prikupljanje itema, PVE, PVP i multiplayer**. 
+
+### Snapshotovi
+![mcslikaprava](https://github.com/R5C-V15T6AMD5S/Unity-GameHub/assets/98615170/e80f984a-4a16-46d7-801d-105a7e0bad6c)
+
 
 
 ## Vampire Survival

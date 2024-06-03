@@ -3,7 +3,16 @@ Unity-GameHub je projekt koji je razvijao tim od sedam članova (studenata). Cil
 Prije samog kodiranja, potrebno je bilo isplanirati i podijeli se u podgrupe za igre. Za dokumentaciju, pogledajte Wiki.
 
 ## Sketch 'n' Guess
+Igra koja spaja elemente *Quick, draw!* (Machine Learning) i *Skribble* (online multiplayer paint game). Opcija za Singleplayer protiv AI-a i Online Multiplayer-a.
 
+### Trenutne značajke
+**Singleplayer, mapa + leveli (progression), AI, Multiplayer (kreiranje sobe, ulazak, opcije sobe)**.
+
+### Budući dodaci
+**Zvukovi, muzika, bolje animacije, dostignuća (achievments), easter eggs, bolja kontrola nad Multiplayerom, bolji interface**.
+
+![SingleplayerMap](https://github.com/R5C-V15T6AMD5S/Unity-GameHub/assets/91406500/5b16a9cf-3d06-49f1-b9a3-f55b2299c083)
+![MultiplayerConnect](https://github.com/R5C-V15T6AMD5S/Unity-GameHub/assets/91406500/8b05629e-56be-4b6a-81ed-a1968ea3f3e3)
 
 ## MinecraftSim
 Ova igra je simulacija popularnog Minecrafta koja sadržava njegove osnovne funkcionalnosti. Više o samom procesu izrade igrice vidljivo je u Wikiju.
@@ -16,7 +25,6 @@ Ova igra je simulacija popularnog Minecrafta koja sadržava njegove osnovne funk
 
 ### Snapshotovi
 ![mcslikaprava](https://github.com/R5C-V15T6AMD5S/Unity-GameHub/assets/98615170/e80f984a-4a16-46d7-801d-105a7e0bad6c)
-
 
 
 ## Vampire Survival

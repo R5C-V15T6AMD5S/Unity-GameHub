@@ -16,6 +16,7 @@ public class DollarOneRecognizer : Recognizer
         TRANSLATED
     }
 
+    // Normalize the points through several transformations: resampling, rotating, scaling, and translating.
     public DollarPoint[] Normalize(DollarPoint[] points, int n, Step step = Step.TRANSLATED)
     {
         DollarPoint[] copyPoints = new DollarPoint[points.Length];
@@ -25,7 +26,7 @@ public class DollarOneRecognizer : Recognizer
         DollarPoint[] scaledPoints = ScaleToSquare(rotatedPoints, _size);
         DollarPoint[] translatedToOrigin = TranslateToOrigin(scaledPoints);
 
-        //Debug purpose only
+        // Debug purpose only
         switch (step)
         {
             case Step.RAW:
@@ -41,15 +42,15 @@ public class DollarOneRecognizer : Recognizer
         return translatedToOrigin;
     }
 
-     public (string, float) DoRecognition(DollarPoint[] points, int n,
-        List<RecognitionManager.GestureTemplate> gestureTemplates)
+    // Perform recognition of the given points against gesture templates.
+    public (string, float) DoRecognition(DollarPoint[] points, int n, List<RecognitionManager.GestureTemplate> gestureTemplates)
     {
         DollarPoint[] preparedPoints = Normalize(points, n);
         float angle = 0.5f * (-1 + Mathf.Sqrt(5));
         return Recognize(preparedPoints, gestureTemplates, 250, angle);
     }
 
-
+    // Rotate points to align the first point with the centroid.
     private DollarPoint[] RotateToZero(DollarPoint[] points)
     {
         float angle = IndicativeAngle(points);
@@ -57,30 +58,29 @@ public class DollarOneRecognizer : Recognizer
         return newPoints.ToArray();
     }
 
+    // Rotate points by a given angle around their centroid.
     private List<DollarPoint> RotateBy(DollarPoint[] points, float angle)
     {
         List<DollarPoint> newPoints = new List<DollarPoint>(points.Length);
         Vector2 centroid = GetCentroid(points);
         foreach (DollarPoint point in points)
         {
-            float rotatedX = (point.Point.x - centroid.x) * Mathf.Cos(angle) -
-                             (point.Point.y - centroid.y) * Mathf.Sin(angle) +
-                             centroid.x;
-            float rotatedY = (point.Point.x - centroid.x) * Mathf.Sin(angle) +
-                             (point.Point.y - centroid.y) * Mathf.Cos(angle) +
-                             centroid.y;
+            float rotatedX = (point.Point.x - centroid.x) * Mathf.Cos(angle) - (point.Point.y - centroid.y) * Mathf.Sin(angle) + centroid.x;
+            float rotatedY = (point.Point.x - centroid.x) * Mathf.Sin(angle) + (point.Point.y - centroid.y) * Mathf.Cos(angle) + centroid.y;
             newPoints.Add(new DollarPoint(rotatedX, rotatedY, 0));
         }
 
         return newPoints;
     }
 
- private float IndicativeAngle(DollarPoint[] points)
+    // Calculate the indicative angle for rotation alignment.
+    private float IndicativeAngle(DollarPoint[] points)
     {
         Vector2 centroid = GetCentroid(points);
         return Mathf.Atan2(points[0].Point.y - centroid.y, points[0].Point.x - centroid.x);
     }
 
+    // Calculate the centroid of the given points.
     private Vector2 GetCentroid(Vector2[] points)
     {
         float centerX = points.Sum(point => point.x) / points.Length;
@@ -88,6 +88,7 @@ public class DollarOneRecognizer : Recognizer
         return new Vector2(centerX, centerY);
     }
 
+    // Scale the points to fit within a square of given size.
     private DollarPoint[] ScaleToSquare(DollarPoint[] points, float size)
     {
         List<DollarPoint> newPoints = new List<DollarPoint>(points.Length);
@@ -101,6 +102,8 @@ public class DollarOneRecognizer : Recognizer
 
         return newPoints.ToArray();
     }
+
+    // Get the bounding box of the points.
     private Rect GetBoundingBox(DollarPoint[] points)
     {
         float minX = points.Select(point => point.Point.x).Min();
@@ -110,6 +113,7 @@ public class DollarOneRecognizer : Recognizer
         return new Rect(minX, minY, maxX - minX, maxY - minY);
     }
 
+    // Translate the points to the origin (centroid at (0,0)).
     private DollarPoint[] TranslateToOrigin(DollarPoint[] points)
     {
         List<DollarPoint> newPoints = new List<DollarPoint>(points.Length);
@@ -123,23 +127,20 @@ public class DollarOneRecognizer : Recognizer
 
         return newPoints.ToArray();
     }
-private (string, float) Recognize(
-        DollarPoint[] points,
-        List<RecognitionManager.GestureTemplate> gestureTemplates,
-        float size,
-        float angle)
+
+    // Recognize the given points by comparing them to gesture templates.
+    private (string, float) Recognize(DollarPoint[] points, List<RecognitionManager.GestureTemplate> gestureTemplates, float size, float angle)
     {
         float theta = 45;
         float deltaTheta = 2;
         float bestDistance = float.MaxValue;
         RecognitionManager.GestureTemplate bestTemplate = new RecognitionManager.GestureTemplate();
 
-        //Should be stored in proceesed, but for testing purpose we use RawPoints
+        // Should be stored in processed, but for testing purposes we use RawPoints
         IEnumerable<RecognitionManager.GestureTemplate> proceedGestures = gestureTemplates.Select(template =>
-            new RecognitionManager.GestureTemplate() {Points = Normalize(template.Points, 64), Name = template.Name});
+            new RecognitionManager.GestureTemplate() { Points = Normalize(template.Points, 64), Name = template.Name });
 
-        foreach (RecognitionManager.GestureTemplate gestureTemplate in proceedGestures.Where(template =>
-            template.Points.Length == points.Length))
+        foreach (RecognitionManager.GestureTemplate gestureTemplate in proceedGestures.Where(template => template.Points.Length == points.Length))
         {
             float distance = DistanceAtBestAngle(points, gestureTemplate, -theta, theta, deltaTheta, angle);
             if (distance < bestDistance)
@@ -149,20 +150,19 @@ private (string, float) Recognize(
             }
         }
 
-         double score = 1 - (bestDistance / (0.5f * Math.Sqrt(2 * size * size)));
-        return ((string, float)) (bestTemplate.Name, score);
+        double score = 1 - (bestDistance / (0.5f * Math.Sqrt(2 * size * size)));
+        return ((string, float))(bestTemplate.Name, score);
     }
 
-    private float DistanceAtBestAngle(DollarPoint[] points, RecognitionManager.GestureTemplate template, float thetaA,
-        float thetaB,
-        float deltaTheta, float angle)
+    // Find the best matching distance at the optimal angle.
+    private float DistanceAtBestAngle(DollarPoint[] points, RecognitionManager.GestureTemplate template, float thetaA, float thetaB, float deltaTheta, float angle)
     {
         float firstX = angle * thetaA + (1 - angle) * thetaB;
         float firstDistance = DistanceAtAngle(points, template, firstX);
         float secondX = (1 - angle) * thetaA + angle * thetaB;
         float secondDistance = DistanceAtAngle(points, template, secondX);
 
-         while (thetaB - thetaA > deltaTheta)
+        while (thetaB - thetaA > deltaTheta)
         {
             if (firstDistance < secondDistance)
             {
@@ -185,12 +185,15 @@ private (string, float) Recognize(
         return Mathf.Min(firstDistance, secondDistance);
     }
 
+    // Calculate the distance between points and the template at a specific angle.
     private float DistanceAtAngle(DollarPoint[] points, RecognitionManager.GestureTemplate template, float angle)
     {
         List<DollarPoint> newPoints = RotateBy(points, angle);
         return PathDistance(newPoints, template.Points);
     }
-private float PathDistance(List<DollarPoint> points, DollarPoint[] templatePoints)
+
+    // Calculate the average distance between corresponding points in two sets of points.
+    private float PathDistance(List<DollarPoint> points, DollarPoint[] templatePoints)
     {
         float distance = 0;
 
@@ -202,4 +205,3 @@ private float PathDistance(List<DollarPoint> points, DollarPoint[] templatePoint
         return distance / points.Count;
     }
 }
-

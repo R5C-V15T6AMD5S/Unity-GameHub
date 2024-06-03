@@ -23,7 +23,7 @@ namespace Level.UI
             }
         }
     
-        private void Resume()
+        public void Resume()
         {
             _gameIsPaused = false;
             pauseMenuUI.SetActive(false);

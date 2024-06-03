@@ -161,4 +161,4 @@ MonoBehaviour:
   exp: {fileID: 6286148072242796551, guid: be24e61102643bc48abf8527c0dd78c3, type: 3}
   maxHealth: 5
   rewardBoxPrefab: {fileID: 3110725081443427476, guid: 7c2e3f06c87a5564286fce014b8b9f54, type: 3}
-  spawnChance: 0.2
+  spawnChance: 0.05

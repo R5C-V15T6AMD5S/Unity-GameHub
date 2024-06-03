@@ -31,6 +31,7 @@ Ova igra je simulacija popularnog Minecrafta koja sadržava njegove osnovne funk
 
 
 # Updates
+- [2024-06-03 19:30:53] R5C-V15T6AMD5S: Merge pull request #169 from R5C-V15T6AMD5S/AI_Algos
 - [2024-06-03 19:01:03] R5C-V15T6AMD5S: Updated README.md
 - [2024-06-03 18:15:56] Deno234: Kratak pregled MinecraftSim-a
 - [2024-06-02 18:17:15] R5C-V15T6AMD5S: Merge pull request #156 from R5C-V15T6AMD5S/CopyMasterSurvivors

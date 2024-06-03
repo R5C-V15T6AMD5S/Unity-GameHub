@@ -28,6 +28,8 @@ Ova igra je simulacija popularnog Minecrafta koja sadržava njegove osnovne funk
 
 
 ## Vampire Survival
+Ova igra je intenzivno zarazna roguelike avantura u topdown perspektivi, postavljena u beskonačno prostranstvo izazova i opasnosti. Igrač je suočen s neprestanim valovima neprijatelja, dok se njihov arsenal oružja neprestano proširuje i prilagođava, omogućujući im da ostanu korak ispred svojih protivnika.
+Uz svaki novi val neprijatelja, igrač ima priliku ne samo preživjeti, već i napredovati, nadograđujući svoje sposobnosti i oružje kako bi se pripremio za sve izazove koji dolaze. Ova neprestana evolucija stvara uzbudljivu i izazovnu atmosferu koja će držati igrača zakačenog za ekran satima.
 
 
 # Updates

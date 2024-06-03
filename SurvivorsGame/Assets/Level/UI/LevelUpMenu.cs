@@ -10,7 +10,7 @@ namespace Level.UI
         private Upgrade[] allUpgrades;
         
         [SerializeField]
-        private UpgradeButton[] options;
+        private UpgradeButton[] options;    //3 options on level up
         
         private bool _isFirstEnable = true;
 
@@ -22,18 +22,20 @@ namespace Level.UI
             }
             allUpgrades = Resources.LoadAll<Upgrade>("Upgrades");
             var usedUpgrades = new HashSet<Upgrade>();
-            foreach (var option in options)
+            Debug.Log("Number of options: " + options.Length);
+            Debug.Log("Number of upgrades: " + allUpgrades.Length);
+            foreach (var option in options) //cycles upgrade panels(3)
             {
                 Upgrade selectedUpgrade;
                 do
                 {
                     var randomIndex = Random.Range(0, allUpgrades.Length);
                     selectedUpgrade = allUpgrades[randomIndex];
-                } while (usedUpgrades.Contains(selectedUpgrade));
+                } while (usedUpgrades.Contains(selectedUpgrade));   //makes sure that there are no duplicate upgrades
                 usedUpgrades.Add(selectedUpgrade);
                 option.Upgrade = selectedUpgrade;
                 var textComponents = option.Button.GetComponentsInChildren<TMP_Text>();
-                foreach (var textComponent in textComponents)
+                foreach (var textComponent in textComponents)   //assigns values to all text components of panel
                 {
                     textComponent.text = textComponent.name switch
                     {
@@ -51,28 +53,26 @@ namespace Level.UI
 
         private void OnEnable()
         {
-            if (_isFirstEnable)
+            if (_isFirstEnable) //failsafe
             {
                 _isFirstEnable = false;
                 return;
             }
-            Debug.Log("Number of options: " + options.Length);
-            Debug.Log("Number of upgrades: " + allUpgrades.Length);
             
             var usedUpgrades = new HashSet<Upgrade>();
-            foreach (var option in options)
+            foreach (var option in options) //cycles upgrade panels(3)
             {
                 Upgrade selectedUpgrade;
                 do
                 {
                     var randomIndex = Random.Range(0, allUpgrades.Length);
                     selectedUpgrade = allUpgrades[randomIndex];
-                } while (usedUpgrades.Contains(selectedUpgrade));
+                } while (usedUpgrades.Contains(selectedUpgrade));   //makes sure that there are no duplicate upgrades
                 usedUpgrades.Add(selectedUpgrade);
                 option.Button.onClick.RemoveAllListeners();
                 option.Upgrade = selectedUpgrade;
                 var textComponents = option.Button.GetComponentsInChildren<TMP_Text>();
-                foreach (var textComponent in textComponents)
+                foreach (var textComponent in textComponents)   //assigns values to all text components of panel
                 {
                     textComponent.text = textComponent.name switch
                     {

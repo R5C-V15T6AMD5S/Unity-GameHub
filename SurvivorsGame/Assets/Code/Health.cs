@@ -86,7 +86,6 @@ namespace Code
                 Instantiate(exp, transform.position, Quaternion.identity);
                 // Generate a random number between 0 and 1
                 var randomNumber = Random.value;
-                Debug.Log(randomNumber);
                 // If the random number is less than or equal to the spawn chance, spawn the reward box
                 if (randomNumber <= spawnChance)
                 {

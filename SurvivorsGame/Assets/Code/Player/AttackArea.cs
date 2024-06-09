@@ -18,5 +18,6 @@ namespace Code.Player
             Debug.Log("Player dealt dmg: " + _dmg + "out of " + hp.hp);
             hp.Damage(_dmg);
         }
+        
     }
 }

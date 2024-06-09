@@ -1,3 +1,4 @@
+using System.Collections;
 using Code.Player;
 using UnityEngine;
 
@@ -55,8 +56,31 @@ namespace Code.Enemy
             }
             if (!(_damageTimer >= TimeToDamage)) return;
             col.GetComponent<Health>().Damage(_dmg);
+            var spriteRenderer = col.GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null) return;
+            // Save the original color
+            var originalColor = spriteRenderer.color;
+
+            // Change the color of the sprite
+            spriteRenderer.color = Color.red; // Change this to the color you want
+            
+            StartCoroutine(RevertColorAfterMilliseconds(spriteRenderer, originalColor, 200));
             Debug.Log("Enemy dealt dmg");
             _damageTimer = 0f;
+        }
+        
+        private static IEnumerator RevertColorAfterMilliseconds(SpriteRenderer spriteRenderer, Color originalColor, int milliseconds)
+        {
+            // Wait for the specified number of milliseconds
+            yield return new WaitForSeconds(milliseconds / 1000f);
+            // Revert the color
+            try
+            {
+                spriteRenderer.color = originalColor;
+            }
+            catch (MissingReferenceException e)
+            {
+            }
         }
 
         public int GetDmg()

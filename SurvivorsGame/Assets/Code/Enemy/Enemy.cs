@@ -40,7 +40,7 @@ namespace Code.Enemy
             var scalingFactor = Mathf.Log(playerLevel * timePassed + 1);    //scaling factor for enemy health and damage
             var enemyHealth = (int)(data.hp * scalingFactor * randomFactor);
             GetComponent<Health>().SetHealth((int) (enemyHealth * randomFactor),(int) (enemyHealth * randomFactor));
-            _dmg = (int) (data.dmg * scalingFactor);
+            _dmg = (int) (data.dmg * scalingFactor / 2);
         } 
 
         private void Swarm()    //Enemies move towards player location

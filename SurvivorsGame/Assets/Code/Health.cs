@@ -6,7 +6,6 @@ namespace Code
 {
     public class Health : MonoBehaviour
     {
-        [SerializeField] 
         public int hp;
     
         [SerializeField] 

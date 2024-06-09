@@ -1,3 +1,4 @@
+using Code.Player;
 using UnityEngine;
 
 namespace Code.Enemy
@@ -12,7 +13,7 @@ namespace Code.Enemy
     
         private float _damageTimer;
     
-        private const float TimeToDamage = 0.2f; //Time between damage dealt when collision occurs
+        private const float TimeToDamage = 0.5f; //Time between damage dealt when collision occurs
     
 
         private GameObject _player;
@@ -28,12 +29,18 @@ namespace Code.Enemy
             _damageTimer += Time.deltaTime;
         }
 
-        private void SetEnemyValues()   //Instantiate enemy values
+        private void SetEnemyValues()   //Instantiate enemy values from prefab
         {
-            GetComponent<Health>().SetHealth(data.hp, data.hp);
-            _dmg = data.dmg;
-            _movementSpeed = data.movementSpeed;
-        }
+            Debug.Log("Setting enemy values");
+            var randomFactor = Random.Range(0.5f, 1.5f);
+            _movementSpeed = data.movementSpeed * randomFactor;
+            var playerLevel = _player.GetComponent<PlayerLeveling>().lvl;
+            var timePassed = Time.time;
+            var scalingFactor = Mathf.Log(playerLevel * timePassed + 1);    //scaling factor for enemy health and damage
+            var enemyHealth = (int)(data.hp * scalingFactor * randomFactor);
+            GetComponent<Health>().SetHealth((int) (enemyHealth * randomFactor),(int) (enemyHealth * randomFactor));
+            _dmg = (int) (data.dmg * scalingFactor);
+        } 
 
         private void Swarm()    //Enemies move towards player location
         {
@@ -50,6 +57,11 @@ namespace Code.Enemy
             col.GetComponent<Health>().Damage(_dmg);
             Debug.Log("Enemy dealt dmg");
             _damageTimer = 0f;
+        }
+
+        public int GetDmg()
+        {
+            return _dmg;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Code.Enemy
         private IEnumerator SpawnEnemy(float interval, GameObject enemy)    //recursive method that is responsible for spawning enemies
         {
             yield return new WaitForSeconds(interval * 1 / (_player.GetComponent<PlayerLeveling>().lvl * 0.5f));
-            Debug.Log("Enemy spawned");
+            
             _player = GameObject.FindGameObjectWithTag("Player");
             Vector3 enemySpawnLocation;
             var position = _player.transform.position;

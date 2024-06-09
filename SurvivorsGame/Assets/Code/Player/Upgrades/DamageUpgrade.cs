@@ -16,7 +16,7 @@ namespace Code.Player.Upgrades
             var child = GameObject.FindGameObjectWithTag("Player").transform.GetChild(0);
             var attackArea = child.GetComponent<AttackArea>();
             Debug.Log(attackArea);
-            attackArea.IncreaseDamage(1);
+            attackArea.IncreaseDamage(5);
             upgradeLevel++;
             Debug.Log("Applying upgrade: " + upgradeName + " level " + upgradeLevel);
         }
